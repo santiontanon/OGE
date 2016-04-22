@@ -88,7 +88,7 @@ public class Main {
                            "module for a game, it is designed to be usable to find orthographic embeddings for any planar " + 
                            "input graphs via the use of PQ-trees.");
         System.out.println("");
-        System.out.println("Example usage: java -classpath OGE.jar Main data/graph1 oe1.txt -png:oe1.png");
+        System.out.println("Example usage: java -classpath OGE.jar Main examples/graph1 examples/oe1.txt -png:examples/oe1.png");
         System.out.println("");
         System.out.println("parameters: input-file output-file options");
         System.out.println("  input-file: a file containing the adjacency matrix of a graph");
