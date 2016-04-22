@@ -35,7 +35,7 @@ For example, providing this input graph (included as an example in the "examples
 1,0,0,0,0,0,0,0,1,0,1  
 1,0,0,0,0,0,0,0,0,1,0  
 
-The program generates an orthographic embedding that looks like this:  
+The program generates an orthographic embedding that looks like this (where the large vertices with numbers in them represent the original vertices of the input graph, and the smaller vertices are auxiliary vertices that had to be added in order to generate the projection, assuming that edges cannot have "elbows"):  
 
 ![graph2 png output](https://raw.githubusercontent.com/santiontanon/OGE/master/examples/oe2.png)
 
