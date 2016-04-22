@@ -21,7 +21,7 @@ parameters: input-file output-file options
   -simplify:true/false : defaults to true, applies a filter to try to reduce unnecessary auxiliary vertices.
   -optimize:true/false : defaults to true, postprocesses the output to try to make it more compact.
 
-For example, providing this input graph (included as an example in the "examples" folder as "graph2.txt":
+For example, providing this input graph (included as an example in the "examples" folder as "graph2.txt"), where a graph is represented as the adjacency matrix between each pair of vertices ("0" is no edge and "1" is edge):
 
 0,1,0,0,0,0,0,0,0,1,1  
 1,0,1,1,0,0,0,0,0,0,0  
