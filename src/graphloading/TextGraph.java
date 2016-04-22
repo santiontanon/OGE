@@ -7,6 +7,7 @@ package graphloading;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -22,15 +23,17 @@ public class TextGraph {
         while(true) {
             String line = br.readLine();
             if (line==null) return graph;
-            String []tokens = line.split("(,| |\t)");
             if (graph==null) {
-                n = tokens.length;
+                StringTokenizer st = new StringTokenizer(line, ", \t");
+                while(st.hasMoreTokens()) {
+                    n++;
+                    st.nextToken();
+                }
                 graph = new int[n][n];
-            } else {
-                if (n!=tokens.length) throw new Exception("number of elements is different than in the previous line in line " + i + " when reading file " + fileName);
             }
+            StringTokenizer st = new StringTokenizer(line, ", \t");
             for(int j = 0;j<n;j++) {
-                graph[i][j] = Integer.parseInt(tokens[j]);
+                graph[i][j] = Integer.parseInt(st.nextToken());
             }
             i++;
         }

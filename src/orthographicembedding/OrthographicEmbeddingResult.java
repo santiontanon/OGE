@@ -1034,6 +1034,7 @@ public class OrthographicEmbeddingResult {
                     
                     // edge-node intersections:
                     for(int i2 = 0;i2<edges.length;i2++) {
+                        if (i2==i1 || i2==j1) continue;
                         double minx2 = x[i2] - toleranceNode;
                         double maxx2 = x[i2] + toleranceNode;
                         double miny2 = y[i2] - toleranceNode;
