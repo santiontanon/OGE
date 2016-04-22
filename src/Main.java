@@ -45,6 +45,10 @@ public class Main {
 
         // calculate the embedding:
         OrthographicEmbeddingResult oe = OrthographicEmbedding.orthographicEmbedding(graph,simplify, correct); 
+        if (oe==null) {
+            System.err.println("No orthographic projection could be found! verify the input graph is planar.");
+            System.exit(1);
+        }
         OrthographicEmbeddingOptimizer.optimize(oe, graph);
         if (!oe.sanityCheck(false)) System.err.println("The orthographic projection without simplification contains errors!");
         
