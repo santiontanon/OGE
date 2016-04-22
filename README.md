@@ -39,5 +39,9 @@ The program generates an orthographic embedding that looks like this:
 
 ![graph2 png output](https://raw.githubusercontent.com/santiontanon/OGE/master/examples/oe2.png)
 
+The output embedding is saved in a text file that contains:
+- First the adjacency matrix of the graph (including any auxiliary vertices that might have had to be added)
+- Second a list of vertices of the new (projected) graph, with the index of the original node in the input graph they correspond to (or -1 if the vertex is a new auxiliary vertex), and the x, y coordinates of the vertex in the orthographic embedding.
+
 Other examples are found in the "examples" folder.
 
