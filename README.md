@@ -11,17 +11,17 @@ The algorihtms implemented in this package were taken from the following papers:
 Example usage: java -classpath OGE.jar Main data/graph1 oe1.txt -png:oe1.png  
 
 parameters: input-file output-file options   
-  input-file: a file containing the adjacency matrix of a graph  
-  output-file: the desired output filename  
-  Options:  
-  -output:[type] : the type of output desired, which can be:  
-        txt (default): a text file with the connectivity matrix, and then a list of vertices, with their mapping to the original vertices, and their coordinates in the orthographic embedding.  
-        (more output types might be added in the future)  
-  -png:filename : saves a graphical version of the output as a .png file  
-  -simplify:true/false : defaults to true, applies a filter to try to reduce unnecessary auxiliary vertices.  
-  -optimize:true/false : defaults to true, postprocesses the output to try to make it more compact.  
+- input-file: a file containing the adjacency matrix of a graph  
+- output-file: the desired output filename  
+- Options:  
+  -  -output:[type] : the type of output desired, which can be:  
+    - txt (default): a text file with the connectivity matrix, and then a list of vertices, with their mapping to the original vertices, and their coordinates in the orthographic embedding. 
+    (more output types might be added in the future)  
+  - -png:filename : saves a graphical version of the output as a .png file  
+  - -simplify:true/false : defaults to true, applies a filter to try to reduce unnecessary auxiliary vertices.  
+  - -optimize:true/false : defaults to true, postprocesses the output to try to make it more compact.  
 
-For example, providing this input graph (included as an example in the "examples" folder as "graph2.txt"), where a graph is represented as the adjacency matrix between each pair of vertices ("0" is no edge and "1" is edge):
+For example, providing this input graph (included as an example in the "examples" folder as "graph2.txt"), where a graph is represented as the adjacency matrix between each pair of vertices ("0" is no edge and "1" is edge):  
 
 0,1,0,0,0,0,0,0,0,1,1  
 1,0,1,1,0,0,0,0,0,0,0  
@@ -35,7 +35,7 @@ For example, providing this input graph (included as an example in the "examples
 1,0,0,0,0,0,0,0,1,0,1  
 1,0,0,0,0,0,0,0,0,1,0  
 
-The program generates an orthographic embedding that looks like this:
+The program generates an orthographic embedding that looks like this:  
 
 ![graph2 png output](https://raw.githubusercontent.com/santiontanon/OGE/master/examples/oe2.png)
 
