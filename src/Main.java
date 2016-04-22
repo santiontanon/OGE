@@ -2,6 +2,7 @@
 import graphloading.TextGraph;
 import java.io.FileWriter;
 import orthographicembedding.OrthographicEmbedding;
+import orthographicembedding.OrthographicEmbeddingOptimizer;
 import orthographicembedding.OrthographicEmbeddingResult;
 
 /*
@@ -22,6 +23,7 @@ public class Main {
     static String outputFileName = null;
     static boolean simplify = true;
     static boolean correct = true;
+    static boolean optimize = true;
     static String output_type = output_type_txt;
 
     static String outputPNGName = null;
@@ -43,6 +45,7 @@ public class Main {
 
         // calculate the embedding:
         OrthographicEmbeddingResult oe = OrthographicEmbedding.orthographicEmbedding(graph,simplify, correct); 
+        OrthographicEmbeddingOptimizer.optimize(oe, graph);
         if (!oe.sanityCheck(false)) System.err.println("The orthographic projection without simplification contains errors!");
         
         // save the results:
@@ -61,6 +64,12 @@ public class Main {
         for(int i = 2;i<args.length;i++) {
             if (args[i].startsWith("-png:")) {
                 outputPNGName = args[i].substring(5);
+            } else if (args[i].startsWith("-simplify")) {
+                if (args[i].equals("-simplify:true")) simplify = true;
+                if (args[i].equals("-simplify:false")) simplify = false;
+            } else if (args[i].startsWith("-optimize")) {
+                if (args[i].equals("-optimize:true")) optimize = true;
+                if (args[i].equals("-optimize:false")) optimize = false;
             } else {
                 System.err.println("Unrecognized parameter " + args[i]);
                 return false;
@@ -79,7 +88,7 @@ public class Main {
                            "module for a game, it is designed to be usable to find orthographic embeddings for any planar " + 
                            "input graphs via the use of PQ-trees.");
         System.out.println("");
-        System.out.println("Example usage: java OGE.jar data/graph1 oe1.txt -png:oe1.png");
+        System.out.println("Example usage: java -classpath OGE.jar Main data/graph1 oe1.txt -png:oe1.png");
         System.out.println("");
         System.out.println("parameters: input-file output-file options");
         System.out.println("  input-file: a file containing the adjacency matrix of a graph");
@@ -89,6 +98,8 @@ public class Main {
         System.out.println("        txt (default): a text file with the connectivity matrix, and then a list of vertices, with their mapping to the original vertices, and their coordinates in the orthographic embedding.");
         System.out.println("        (more output types might be added in the future)");
         System.out.println("  -png:filename : saves a graphical version of the output as a .png file");
+        System.out.println("  -simplify:true/false : defaults to true, applies a filter to try to reduce unnecessary auxiliary vertices.");
+        System.out.println("  -optimize:true/false : defaults to true, postprocesses the output to try to make it more compact.");
         System.out.println("");
     }
     
