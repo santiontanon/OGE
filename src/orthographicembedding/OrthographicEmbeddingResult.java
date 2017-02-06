@@ -175,43 +175,53 @@ public class OrthographicEmbeddingResult {
                                     }
                                 }
                             } else {
-                                if (Math.abs(intermediate_x-startx)<0.001) {
-                                    if (oew.angle==OEElement.UP) { // up from the end
-//                                        System.out.println("up from the end");
-                                        x[idx] = startx;
-                                        y[idx] = endy-separation;
-                                        x[idx+1] = endx;
-                                        y[idx+1] = endy-separation;
-                                    } else {            // down from the end
-                                        x[idx] = startx;
-                                        y[idx] = endy+separation;
-                                        x[idx+1] = endx;
-                                        y[idx+1] = endy+separation;
-                                    }
+                                if (Math.abs(startx-endx)<0.001) {
+                                    edges[v][w] = true;
                                 } else {
-                                    if (oev.angle==OEElement.UP) { // up from the start
-//                                        System.out.println("up from the start");
-                                        x[idx] = startx;
-                                        y[idx] = starty-separation;
-                                        x[idx+1] = endx;
-                                        y[idx+1] = starty-separation;
-                                    } else {            // down from the start
-//                                        System.out.println("down from the start");
-                                        x[idx] = startx;
-                                        y[idx] = starty+separation;
-                                        x[idx+1] = endx;
-                                        y[idx+1] = starty+separation;
+    //                                System.out.println(v + " -> " + w + " startx: " + startx + ", endx: " + endx);
+                                    if (Math.abs(intermediate_x-startx)<0.001) {
+                                        if (oew.angle==OEElement.UP) { // up from the end
+    //                                        System.out.println("up from the end");
+                                            x[idx] = startx;
+                                            y[idx] = endy-separation;
+                                            x[idx+1] = endx;
+                                            y[idx+1] = endy-separation;
+                                        } else {            // down from the end
+                                            x[idx] = startx;
+                                            y[idx] = endy+separation;
+                                            x[idx+1] = endx;
+                                            y[idx+1] = endy+separation;
+                                        }
+                                    } else {
+                                        if (oev.angle==OEElement.UP) { // up from the start
+    //                                        System.out.println("up from the start");
+                                            x[idx] = startx;
+                                            y[idx] = starty-separation;
+                                            x[idx+1] = endx;
+                                            y[idx+1] = starty-separation;
+                                        } else {            // down from the start
+    //                                        System.out.println("down from the start");
+                                            x[idx] = startx;
+                                            y[idx] = starty+separation;
+                                            x[idx+1] = endx;
+                                            y[idx+1] = starty+separation;
+                                        }
                                     }
+                                    edges[v][idx] = true;
+                                    edges[idx][idx+1] = true;
+                                    edges[idx+1][w] = true;
+                                    idx+=2;
                                 }
                             }
-                            edges[v][idx] = true;
-                            edges[idx][idx+1] = true;
-                            edges[idx+1][w] = true;
-                            idx+=2;
                         } else if (oev.bends+oew.bends==3) {
                             nodeIndexes[idx]=-1;
                             nodeIndexes[idx+1]=-1;
                             nodeIndexes[idx+2]=-1;
+                            edges[v][idx] = true;
+                            edges[idx][idx+1] = true;
+                            edges[idx+1][idx+2] = true;
+                            edges[idx+2][w] = true;
+                            int nnewvertices = 3;
                             if (oev.angle==OEElement.LEFT) {
                                 if (DEBUG>=1) System.out.println("  connector with 3 bends (LEFT)");
                                 double tmpx = intermediate_x;
@@ -238,13 +248,29 @@ public class OrthographicEmbeddingResult {
                                 if (oew.angle==OEElement.DOWN) {
                                     x[idx+1] = tmpx;
                                     y[idx+1] = endy+separation;
-                                    x[idx+2] = endx;
-                                    y[idx+2] = endy+separation;
+                                    if (Math.abs(tmpx-endx)>0.001) {
+                                        x[idx+2] = endx;
+                                        y[idx+2] = endy+separation;
+                                    } else {
+                                        // the thrid vertex would be identical to the second, so, do not add it!:
+                                        nnewvertices = 2;
+                                        edges[idx+1][idx+2] = false;
+                                        edges[idx+2][w] = false;
+                                        edges[idx+1][w] = true;
+                                    }
                                 } else {
                                     x[idx+1] = tmpx;
                                     y[idx+1] = endy-separation;
-                                    x[idx+2] = endx;
-                                    y[idx+2] = endy-separation;
+                                    if (Math.abs(tmpx-endx)>0.001) {
+                                        x[idx+2] = endx;
+                                        y[idx+2] = endy-separation;
+                                    } else {
+                                        // the thrid vertex would be identical to the second, so, do not add it!:
+                                        nnewvertices = 2;                                        
+                                        edges[idx+1][idx+2] = false;
+                                        edges[idx+2][w] = false;
+                                        edges[idx+1][w] = true;
+                                    }
                                 }
                             } else {
                                 if (DEBUG>=1) System.out.println("  connector with 3 bends (UP/DOWN)");
@@ -255,26 +281,38 @@ public class OrthographicEmbeddingResult {
                                 if (oew.angle==OEElement.RIGHT) {
                                     if (intermediate_x<endx) tmpx = endx+separation;                                    
                                 }
-                                if (oev.angle==OEElement.DOWN) {
-                                    x[idx] = startx;
-                                    y[idx] = starty+separation;
-                                    x[idx+1] = tmpx;
-                                    y[idx+1] = starty+separation;
+                                if (Math.abs(startx-tmpx)>0.001) {
+                                    if (oev.angle==OEElement.DOWN) {
+                                        x[idx] = startx;
+                                        y[idx] = starty+separation;
+                                        x[idx+1] = tmpx;
+                                        y[idx+1] = starty+separation;
+                                    } else {
+                                        x[idx] = startx;
+                                        y[idx] = starty-separation;
+                                        x[idx+1] = tmpx;
+                                        y[idx+1] = starty-separation;
+                                    }
+                                    x[idx+2] = tmpx;
+                                    y[idx+2] = endy;
                                 } else {
-                                    x[idx] = startx;
-                                    y[idx] = starty-separation;
+                                    // the thrid vertex would be identical to the second, so, do not add it!:
+                                    nnewvertices = 2;                                        
+                                    edges[idx+1][idx+2] = false;
+                                    edges[idx+2][w] = false;
+                                    edges[idx+1][w] = true;
+                                    if (oev.angle==OEElement.DOWN) {
+                                        x[idx] = startx;
+                                        y[idx] = starty+separation;
+                                    } else {
+                                        x[idx] = startx;
+                                        y[idx] = starty-separation;
+                                    }
                                     x[idx+1] = tmpx;
-                                    y[idx+1] = starty-separation;
+                                    y[idx+1] = endy;                                    
                                 }
-                                x[idx+2] = tmpx;
-                                y[idx+2] = endy;
-                            }
-                            edges[v][idx] = true;
-                            edges[idx][idx+1] = true;
-                            edges[idx+1][idx+2] = true;
-                            edges[idx+2][w] = true;
-                            idx+=3;
-                            
+                            }                            
+                            idx+=nnewvertices;
                         } else {
                             //Connector with 4 bends:
                             nodeIndexes[idx]=-1;
@@ -314,6 +352,27 @@ public class OrthographicEmbeddingResult {
                     }
                 }
             }
+        }
+        
+        if (idx<n) {
+            int nodeIndexes2[] = new int[idx];
+            double x2[] = new double[idx];
+            double y2[] = new double[idx];
+            boolean edges2[][] = new boolean[idx][idx];
+
+            for(int i = 0;i<idx;i++) {
+                nodeIndexes2[i] = nodeIndexes[i];
+                x2[i] = x[i];
+                y2[i] = y[i];
+                for(int j = 0;j<idx;j++) {
+                    edges2[i][j] = edges[i][j];
+                }
+            }
+    
+            nodeIndexes = nodeIndexes2;
+            x = x2;
+            y = y2;
+            edges = edges2;
         }
 
         if (fixNonOrthogonal) fixNonOrthogonalEdges();
