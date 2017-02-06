@@ -8,6 +8,7 @@ package orthographicembedding;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -16,13 +17,13 @@ import java.util.List;
 public class OrthographicEmbedding {
     public static int DEBUG = 0;
         
-    public static OrthographicEmbeddingResult orthographicEmbedding(int graph[][], boolean simplify, boolean fixNonOrthogonal) throws Exception {
+    public static OrthographicEmbeddingResult orthographicEmbedding(int graph[][], boolean simplify, boolean fixNonOrthogonal, Random r) throws Exception {
         int n = graph.length;
         OEVertex embedding[] = new OEVertex[n];
         
         // Algorithm from: "Planar Grid Embedding in Linear Time" Tamasia and Tollis
         // Step 1: Construct a visibility representation Gamma for the graph
-        Visibility Gamma = new Visibility(graph);
+        Visibility Gamma = new Visibility(graph, r);
         if (!Gamma.WVisibility()) {
             return null;
         }        

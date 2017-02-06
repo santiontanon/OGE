@@ -6,11 +6,13 @@
 
 package orthographicembedding;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import util.Pair;
 
 /**
@@ -19,6 +21,8 @@ import util.Pair;
  */
 public class Visibility {
     public static int DEBUG = 0;
+    
+    public Random r = null;
     
     public int graph[][];
     public int nEdges;
@@ -34,8 +38,9 @@ public class Visibility {
     public double vertical_y1[];
     public double vertical_y2[];    
     
-    public Visibility(int [][]a_graph) {
+    public Visibility(int [][]a_graph, Random a_r) {
         int n = a_graph.length;
+        r = a_r;
         graph = a_graph;        
         nEdges = 0;
         edgeIndexes = new int[n][n];
@@ -79,6 +84,7 @@ public class Visibility {
     
     
     public void copy(Visibility v) {
+        r = v.r;
         graph = v.graph;
         nEdges = v.nEdges;
         edgeIndexes = v.edgeIndexes;
@@ -188,16 +194,19 @@ public class Visibility {
             // W-VISIBILITY2 algorithm
             // from: "A Unified Approach to Visibility Representations of Planar Graphs"
             // 1 find the blocks:
-            List<Integer> T = new LinkedList<>();
-            List<Integer> S = new LinkedList<>();
+            List<Integer> T = new ArrayList<>();
+            List<Integer> S = new ArrayList<>();
             T.addAll(blocks.keySet());
+            
+            // we randomize it (to get differnt outputs every time):
+            Collections.shuffle(T, r);
             
             // 2 construct the visibility representation for B_1:
             int blockID1 = T.remove(0);
             List<Integer> block1 = blocks.get(blockID1);
             int [][]blockgraph1 = blockSubgraph(block1);
             if (DEBUG>=1) System.out.println("W-VISIBILITY2: computing visibility of first block: " + block1);
-            Visibility block1Visibility = new Visibility(blockgraph1);
+            Visibility block1Visibility = new Visibility(blockgraph1, r);
             if (!block1Visibility.WVisibility2Connected()) return false;
             S.add(blockID1);
             
@@ -266,7 +275,7 @@ public class Visibility {
                             if (DEBUG>=1) System.out.println("W-VISIBILITY2: computing visibility of block: " + blocks.get(blockID));
                             List<Integer> block = blocks.get(blockID);
                             int [][]blockgraph = blockSubgraph(block);
-                            Visibility bv = new Visibility(blockgraph);
+                            Visibility bv = new Visibility(blockgraph, r);
                             // get an st-numbering where s is the cutnode:
                             int blockSTNumbering[] = STNumbering.stNumbering(blockgraph, blocks.get(blockID).indexOf(c));
                             // compute the visibility:

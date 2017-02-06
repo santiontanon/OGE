@@ -9,6 +9,7 @@ package orthographicembedding;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -25,8 +26,8 @@ public class Blocks {
         if (graph.length==1) {
             if (DEBUG>=2) System.out.println("Blocks: special case of a graph with a single node.");
             // special case:
-            HashMap<Integer,List<Integer>> blocks = new HashMap<>();
-            HashMap<Integer,List<Integer>> cutNodes = new HashMap<>();
+            HashMap<Integer,List<Integer>> blocks = new LinkedHashMap<>();
+            HashMap<Integer,List<Integer>> cutNodes = new LinkedHashMap<>();
             List<Integer> l = new LinkedList<>();
             l.add(1);
             blocks.put(0, l);
@@ -121,7 +122,7 @@ public class Blocks {
         }
         
         // Rename the blocks:
-        HashMap<Integer,Integer> blockRenaming = new HashMap<>();
+        HashMap<Integer,Integer> blockRenaming = new LinkedHashMap<>();
         List<Integer> trivialBlocks = new LinkedList<Integer>();
         int nextBlock = 1;
         for(int i = 1;i<=n;i++) {
@@ -145,8 +146,8 @@ public class Blocks {
         }
         
         // translate the blocks and cutedges:
-        HashMap<Integer,List<Integer>> blocks = new HashMap<>();
-        HashMap<Integer,List<Integer>> cutNodes = new HashMap<>();
+        HashMap<Integer,List<Integer>> blocks = new LinkedHashMap<>();
+        HashMap<Integer,List<Integer>> cutNodes = new LinkedHashMap<>();
         for(int i = 1;i<=n;i++) {
             List<Integer> nodeBlocks = new LinkedList<>();
             //nodeBlocks.add(b[i]);

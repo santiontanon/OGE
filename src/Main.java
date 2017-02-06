@@ -1,6 +1,7 @@
 
 import graphloading.TextGraph;
 import java.io.FileWriter;
+import java.util.Random;
 import orthographicembedding.OrthographicEmbedding;
 import orthographicembedding.OrthographicEmbeddingOptimizer;
 import orthographicembedding.OrthographicEmbeddingResult;
@@ -16,7 +17,10 @@ import orthographicembedding.OrthographicEmbeddingResult;
  * @author santi
  */
 public class Main {
-
+    public static Long randomSeed = null;
+    public static Random r = new Random();  // we will create a single "Random" object that will be used by
+                                            // all methods, so we can control it by setting a random seed, etc.
+    
     public static String output_type_txt = "txt";
     
     static String inputFileName = null;
@@ -42,15 +46,21 @@ public class Main {
             System.err.println("Cannot load input-file " + inputFileName);
             System.exit(1);
         }
+        
+        if (randomSeed != null) r = new Random(randomSeed);
 
         // calculate the embedding:
-        OrthographicEmbeddingResult oe = OrthographicEmbedding.orthographicEmbedding(graph,simplify, correct); 
+        OrthographicEmbeddingResult oe = OrthographicEmbedding.orthographicEmbedding(graph,simplify, correct, r); 
         if (oe==null) {
             System.err.println("No orthographic projection could be found! verify the input graph is planar.");
             System.exit(1);
         }
-        OrthographicEmbeddingOptimizer.optimize(oe, graph);
-        if (!oe.sanityCheck(false)) System.err.println("The orthographic projection without simplification contains errors!");
+        if (!oe.sanityCheck(false)) System.err.println("The orthographic projection contains errors!");
+        
+        if (optimize) {
+            OrthographicEmbeddingOptimizer.optimize(oe, graph);
+            if (!oe.sanityCheck(false)) System.err.println("The orthographic projection after optimization contains errors!");
+        }
         
         // save the results:
         saveEmbedding(outputFileName, oe);
@@ -74,6 +84,9 @@ public class Main {
             } else if (args[i].startsWith("-optimize")) {
                 if (args[i].equals("-optimize:true")) optimize = true;
                 if (args[i].equals("-optimize:false")) optimize = false;
+            } else if (args[i].startsWith("-rs:")) {
+                String str = args[i].substring(4);
+                randomSeed = Long.parseLong(str);
             } else {
                 System.err.println("Unrecognized parameter " + args[i]);
                 return false;
@@ -104,6 +117,7 @@ public class Main {
         System.out.println("  -png:filename : saves a graphical version of the output as a .png file");
         System.out.println("  -simplify:true/false : defaults to true, applies a filter to try to reduce unnecessary auxiliary vertices.");
         System.out.println("  -optimize:true/false : defaults to true, postprocesses the output to try to make it more compact.");
+        System.out.println("  -rs:XXX : specifies the random seed for the random number generator.");
         System.out.println("");
     }
     
