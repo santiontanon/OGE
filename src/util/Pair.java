@@ -21,4 +21,21 @@ public class Pair<T1,T2> {
     public String toString() {
         return "<" + m_a + "," + m_b + ">";
     }
+
+    public int hashCode() {
+        return 31 * this.m_a.hashCode() + this.m_b.hashCode();
+        // http://stackoverflow.com/questions/299304/why-does-javas-hashcode-in-string-use-31-as-a-multiplier
+    }
+
+    public static int ipow(int base, int exp) {
+        int result = 1;
+        while (exp > 0) {
+            if ((exp & 1) != 0) {
+                result *= base;
+            }
+            exp >>= 1;
+            base *= base;
+        }
+        return result;
+    }
 }
