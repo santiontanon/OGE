@@ -22,11 +22,6 @@ public class Pair<T1,T2> {
         return "<" + m_a + "," + m_b + ">";
     }
 
-
-    public String toString() {
-        return "<" + m_a + "," + m_b + ">";
-    }
-
     public int hashCode() {
         return 31 * this.m_a.hashCode() + this.m_b.hashCode();
         // http://stackoverflow.com/questions/299304/why-does-javas-hashcode-in-string-use-31-as-a-multiplier
