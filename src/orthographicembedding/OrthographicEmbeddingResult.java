@@ -1126,4 +1126,22 @@ public class OrthographicEmbeddingResult {
 
         return true;
     }
+    
+    
+    public String toString()
+    {
+        String tmp = "";
+        for(int i = 0;i<nodeIndexes.length;i++) {    
+            for(int j = 0;j<nodeIndexes.length;j++) {
+                if (edges[i][j] || edges[j][i]) tmp+="1" + ", ";
+                                                 else tmp+="0" + ", ";
+            }
+            tmp+="\n";
+        }
+        for(int i = 0;i<nodeIndexes.length;i++) {    
+            tmp+=i + ", " + nodeIndexes[i] + ", " + x[i] + ", " + y[i] + "\n";
+        }
+        
+        return tmp;
+    }
  }

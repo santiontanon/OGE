@@ -56,6 +56,7 @@ public class SavePNG {
                     double y0 = Math.min(oe.y[i], oe.y[j]) - miny;
                     double x1 = Math.max(oe.x[i], oe.x[j]) - minx;
                     double y1 = Math.max(oe.y[i], oe.y[j]) - miny;
+//                    System.out.println("drawing edge between " + i + " and " + j + ": " + x0 +"," + y0 + " -> " + x1 + "," + y1);
                     g.setColor(Color.darkGray);
                     g.fillRect((int)(x0*cell_width + cell_width*(0.5 - edge_scale/2)), 
                                (int)(y0*cell_height + cell_height*(0.5 - edge_scale/2)), 

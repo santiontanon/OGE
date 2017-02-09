@@ -2,6 +2,7 @@ package orthographicembedding;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import orthographicembedding.OrthographicEmbeddingResult;
 
@@ -43,6 +44,7 @@ public class DisconnectedGraphs {
             if (!closed.isEmpty()) {
                 graphs.add(closed);
             }
+            Collections.sort(closed);
             closedAccum.addAll(closed);
         }while(closedAccum.size()<n);
         
@@ -79,14 +81,6 @@ public class DisconnectedGraphs {
             }
             
             OrthographicEmbeddingResult aggregated = new OrthographicEmbeddingResult(n);
-            
-            /*
-    public OEVertex embedding[];
-    public int nodeIndexes[];
-    public double x[];
-    public double y[];
-    public boolean edges[][];            
-            */
 
             int startIndex = 0;
             double startX = 0;

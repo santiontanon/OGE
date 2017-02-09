@@ -24,7 +24,7 @@ public class Main {
     public static Random r = new Random();  // we will create a single "Random" object that will be used by
                                             // all methods, so we can control it by setting a random seed, etc.
     
-    public static String output_type_txt = "txt";
+    public static final String output_type_txt = "txt";
     
     static String inputFileName = null;
     static String outputFileName = null;
@@ -63,7 +63,8 @@ public class Main {
                 System.exit(1);
             }
             if (!g_oe.sanityCheck(false)) System.err.println("The orthographic projection contains errors!");
-
+//            System.out.println(g_oe);
+            
             if (optimize) {
                 OrthographicEmbeddingOptimizer.optimize(g_oe, g);
                 if (!g_oe.sanityCheck(false)) System.err.println("The orthographic projection after optimization contains errors!");
