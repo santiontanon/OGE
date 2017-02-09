@@ -1,6 +1,8 @@
 
 import graphloading.TextGraph;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import orthographicembedding.OrthographicEmbedding;
 import orthographicembedding.OrthographicEmbeddingOptimizer;
@@ -49,18 +51,25 @@ public class Main {
         
         if (randomSeed != null) r = new Random(randomSeed);
 
-        // calculate the embedding:
-        OrthographicEmbeddingResult oe = OrthographicEmbedding.orthographicEmbedding(graph,simplify, correct, r); 
-        if (oe==null) {
-            System.err.println("No orthographic projection could be found! verify the input graph is planar.");
-            System.exit(1);
+        List<List<Integer>> disconnectedGraphs = DisconnectedGraphs.findDisconnectedGraphs(graph);
+        List<OrthographicEmbeddingResult> disconnectedEmbeddings = new ArrayList<>();
+        for(List<Integer> nodeSubset:disconnectedGraphs) {
+            // calculate the embedding:
+            int [][]g = DisconnectedGraphs.subgraph(graph, nodeSubset);
+            OrthographicEmbeddingResult g_oe = OrthographicEmbedding.orthographicEmbedding(g,simplify, correct, r); 
+            if (g_oe==null) {
+                System.err.println("No orthographic projection could be found! verify the input graph is planar.");
+                System.exit(1);
+            }
+            if (!g_oe.sanityCheck(false)) System.err.println("The orthographic projection contains errors!");
+
+            if (optimize) {
+                OrthographicEmbeddingOptimizer.optimize(g_oe, g);
+                if (!g_oe.sanityCheck(false)) System.err.println("The orthographic projection after optimization contains errors!");
+            }
+            disconnectedEmbeddings.add(g_oe);
         }
-        if (!oe.sanityCheck(false)) System.err.println("The orthographic projection contains errors!");
-        
-        if (optimize) {
-            OrthographicEmbeddingOptimizer.optimize(oe, graph);
-            if (!oe.sanityCheck(false)) System.err.println("The orthographic projection after optimization contains errors!");
-        }
+        OrthographicEmbeddingResult oe = DisconnectedGraphs.mergeDisconnectedEmbeddingsSideBySide(disconnectedEmbeddings, disconnectedGraphs, 1.0);
         
         // save the results:
         saveEmbedding(outputFileName, oe);

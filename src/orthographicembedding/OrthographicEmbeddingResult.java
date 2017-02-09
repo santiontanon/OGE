@@ -26,6 +26,16 @@ public class OrthographicEmbeddingResult {
     public boolean edges[][];
     
     public static double separation = 0.25;
+    
+    public OrthographicEmbeddingResult(int n)
+    {
+        embedding = new OEVertex[n];
+        nodeIndexes = new int[n];
+        x = new double[n];
+        y = new double[n];
+        edges = new boolean[n][n];        
+    }
+    
 
     public OrthographicEmbeddingResult(OEVertex a_embedding[], Visibility visibility, boolean fixNonOrthogonal) throws Exception {
         embedding = a_embedding;

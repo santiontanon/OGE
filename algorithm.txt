@@ -5,7 +5,7 @@ The required algorithms were adapted from the following papers:
 - Tamassia, Roberto, and Ioannis G. Tollis. "Planar Grid Embedding in Linear Time"
 - Tamassia, Roberto, and Ioannis G. Tollis. "A unified approach to visibility representations of planar graphs." Discrete & Computational Geometry 1.4 (1986): 321-341.
 
-- The specific algorithm used can be summarized as follows:
+- The specific algorithm used can be summarized as follows (for each connected component of the graph):
 1.- Construct a w-visibility representation (Gamma) for the graph (g)
 	1.1.- Find the "blocks" and "cutnodes" of the graph (blocks are 2-connected components of the graph, and cutnodes are the nodes that separate the blocks)
 	1.2.- Select 1 block and construct the w-visibility representation for it (a w-visibility is a planar diagram where horizontal lines represent vertices, and vertical lines represent edges):
@@ -20,5 +20,7 @@ The required algorithms were adapted from the following papers:
 2.- Generate specific coordinates for all the vertices and edges in G', using a pattern-based approach. This results in an initial orthographic embedding H
 3.- Simplify H by means of a collection of bend-stretching transformations
 4.- Use a greedy-search method to reduce the number of "bends" in the edges of the graph.
+
+Whenever the input graph has disconnected components, the previous algorithm is run for each component, and then the result is just each of the individual embeddings drawn side by side.
 
 Santiago Ontanon
