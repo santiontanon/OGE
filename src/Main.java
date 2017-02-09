@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import orthographicembedding.DisconnectedGraphs;
 import orthographicembedding.OrthographicEmbedding;
 import orthographicembedding.OrthographicEmbeddingOptimizer;
 import orthographicembedding.OrthographicEmbeddingResult;
