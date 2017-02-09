@@ -1,5 +1,5 @@
 # OGE
-Orthographic Graph Embedder (OGE) v1.0 by Santiago Ontañón (2016)  
+Orthographic Graph Embedder (OGE) v1.1 by Santiago Ontañón (2016-2017)  
 
 This tool computes an orthographic embedding of a plannar input graph. Although the tool was originally designed to be part of a procedural-content generation (PCG) module for a game, it is designed to be usable to find orthographic embeddings for any planar input graphs by using st-numberings to construct a weak-visibility representation, and then PQ-trees to generate the orthographic embeddings. If the input graph is plannar, this procedure guarantees that an orthographic embedding without any edges crossing over any other vertices will be found.  
 
