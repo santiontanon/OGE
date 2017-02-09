@@ -277,7 +277,7 @@ public class Visibility {
                             int [][]blockgraph = blockSubgraph(block);
                             Visibility bv = new Visibility(blockgraph, r);
                             // get an st-numbering where s is the cutnode:
-                            int blockSTNumbering[] = STNumbering.stNumbering(blockgraph, blocks.get(blockID).indexOf(c));
+                            int blockSTNumbering[] = STNumbering.stNumbering(blockgraph, blocks.get(blockID).indexOf(c), r);
                             // compute the visibility:
                             if (!bv.WVisibility2Connected(blockSTNumbering)) return false;
                             
@@ -380,7 +380,7 @@ public class Visibility {
     public boolean WVisibility2Connected() throws Exception {    
         // 1,2: select (s,t) and generate an st-order. 
         //      Generate the graph D induced by the st-ordering
-        int stNumbering[] = STNumbering.stNumbering(graph);
+        int stNumbering[] = STNumbering.stNumbering(graph, r);
         if (DEBUG>=1) {
             // verify the STNumbering:
             for(int i = 0;i<stNumbering.length;i++) {

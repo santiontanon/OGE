@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -20,8 +21,8 @@ public class PlanarEmbedding {
     public static int DEBUG = 0;
     
     // This function assumes that the given graph is 2-connected
-    public static List<Integer>[] planarEmbedding2Connected(int graph[][]) throws Exception {
-        int stNumbering[] = STNumbering.stNumbering(graph);
+    public static List<Integer>[] planarEmbedding2Connected(int graph[][], Random r) throws Exception {
+        int stNumbering[] = STNumbering.stNumbering(graph, r);
         if (DEBUG>=1) System.out.println("stNumbering: " + Arrays.toString(stNumbering));
         return planarEmbedding2Connected(graph, stNumbering);
     }

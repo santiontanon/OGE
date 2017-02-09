@@ -6,9 +6,11 @@
 
 package orthographicembedding;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -19,9 +21,10 @@ public class STNumbering {
     
     // Implementation of the algorithm in:
     // S. Even and R. E. Tarjan, Computing an st-numbering, Theoret. Comput. Sci. 2, (1976), 339-344.
-    public static int[] stNumbering(int graph[][]) throws Exception {
-        int n = graph.length;
-        
+    public static int[] stNumbering(int graph[][], Random r) throws Exception {
+//        int n = graph.length;
+        return stNumbering(graph, r.nextInt(graph.length), r);
+/*        
         if (DEBUG>=1) {
             System.out.println("Computing stNumebring of graph:");
             for(int i = 0;i<graph.length;i++) {            
@@ -66,18 +69,21 @@ public class STNumbering {
         }
         
         return stnumbers;
+        */
     }
     
     
-    public static int[] stNumbering(int graph[][], int s) throws Exception {
+    public static int[] stNumbering(int graph[][], int s, Random r) throws Exception {
         int t = -1;
+        List<Integer> candidates = new ArrayList<>();
         for(int i = 0;i<graph.length;i++) {
             if (graph[s][i]==1) {
-                t = i;
-                return stNumbering(graph, s, t);
+                candidates.add(i);
             }       
         }
-        return null;
+        if (candidates.isEmpty()) return null;
+        t = candidates.get(r.nextInt(candidates.size()));
+        return stNumbering(graph, s, t);
     }
     
         
