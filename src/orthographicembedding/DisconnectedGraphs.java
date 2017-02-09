@@ -1,3 +1,5 @@
+package orthographicembedding;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +50,7 @@ public class DisconnectedGraphs {
     }
     
     
-    static int[][]subgraph(int graph[][], List<Integer> vertexIndexes) {
+    public static int[][]subgraph(int graph[][], List<Integer> vertexIndexes) {
         int n2 = vertexIndexes.size();
         int graph2[][] = new int[n2][n2];
         for(int i2 = 0;i2<n2;i2++) {
@@ -62,7 +64,7 @@ public class DisconnectedGraphs {
     }
     
 
-    static OrthographicEmbeddingResult mergeDisconnectedEmbeddingsSideBySide(List<OrthographicEmbeddingResult> disconnectedEmbeddings, 
+    public static OrthographicEmbeddingResult mergeDisconnectedEmbeddingsSideBySide(List<OrthographicEmbeddingResult> disconnectedEmbeddings, 
                                                                    List<List<Integer>> vertexIndexes,
                                                                    double separation) {
         if (disconnectedEmbeddings.size()==1) {
