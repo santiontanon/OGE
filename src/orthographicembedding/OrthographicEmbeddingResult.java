@@ -143,7 +143,7 @@ public class OrthographicEmbeddingResult {
                             nodeIndexes[idx]=-1;
                             nodeIndexes[idx+1]=-1;
                             if (oev.angle==OEElement.LEFT) {
-                                if (DEBUG>=1) System.out.println("  connector with 2 bends (LEFT)");
+                                if (DEBUG>=1) System.out.println("  connector "+v+" to "+w+" with 2 bends (LEFT)");
                                 if (intermediate_x>startx) {
                                     x[idx] = startx-separation;
                                     y[idx] = starty;
@@ -162,6 +162,10 @@ public class OrthographicEmbeddingResult {
                                         y[idx+1] = endy;
                                     }
                                 }
+                                edges[v][idx] = true;
+                                edges[idx][idx+1] = true;
+                                edges[idx+1][w] = true;
+                                idx+=2;
                             } else if (oev.angle==OEElement.RIGHT) {
                                 if (intermediate_x<startx) {
                                     if (DEBUG>=1) System.out.println("  connector with 2 bends (RIGHT), case 1");
@@ -184,6 +188,10 @@ public class OrthographicEmbeddingResult {
                                         y[idx+1] = endy;
                                     }
                                 }
+                                edges[v][idx] = true;
+                                edges[idx][idx+1] = true;
+                                edges[idx+1][w] = true;
+                                idx+=2;
                             } else {
                                 if (Math.abs(startx-endx)<0.001) {
                                     edges[v][w] = true;
