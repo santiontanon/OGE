@@ -19,11 +19,11 @@ import orthographicembedding.OrthographicEmbeddingResult;
 public class DisconnectedGraphs {
     public static List<List<Integer>> findDisconnectedGraphs(int graph[][]) {
         int n = graph.length;
-        List<List<Integer>> graphs = new ArrayList<>();
-        List<Integer> closedAccum = new ArrayList<>();
+        List<List<Integer>> graphs = new ArrayList<List<Integer>>();
+        List<Integer> closedAccum = new ArrayList<Integer>();
         do {
-            List<Integer> open = new ArrayList<>();
-            List<Integer> closed = new ArrayList<>();
+            List<Integer> open = new ArrayList<Integer>();
+            List<Integer> closed = new ArrayList<Integer>();
             
             for(int i = 0;i<n;i++) {
                 if (!closedAccum.contains(i)) {

@@ -39,7 +39,7 @@ public class PlanarEmbedding {
     public static List<Integer>[] planarUpwardEmbedding(int graph[][], int stNumbering[]) throws Exception {
         int n = graph.length;
         List<Integer> embedding[] = new List[n];
-        HashMap<PQTree,Integer> nodeParent = new LinkedHashMap<>();
+        HashMap<PQTree,Integer> nodeParent = new LinkedHashMap<PQTree,Integer>();
         int nodeWithNumber[] = new int[n];
         int s = -1;
         int t = -1;
@@ -84,13 +84,13 @@ public class PlanarEmbedding {
             // Vertex addition step:
             // - get the pertiment root (what I used to call the "fullParent"
             // - get all the "pertinent leaves" (full leaves) + direction indicators: l1, ..., lk
-            List<PQTree> fullNodes = new LinkedList<>(); 
-            List<PQTree> pertinentLeaves = new LinkedList<>();
-            List<PQTree> directionIndicators = new LinkedList<>();
+            List<PQTree> fullNodes = new LinkedList<PQTree>(); 
+            List<PQTree> pertinentLeaves = new LinkedList<PQTree>();
+            List<PQTree> directionIndicators = new LinkedList<PQTree>();
             PQTree fullParent = null;
             PQTree pertinentRoot = null;
             {
-                List<PQTree> stack = new LinkedList<>();
+                List<PQTree> stack = new LinkedList<PQTree>();
                 stack.add(pqTree);
                 while(!stack.isEmpty()) {
                     PQTree current = stack.remove(0);
@@ -149,7 +149,7 @@ public class PlanarEmbedding {
                         }
                     }
                 }while(repeat);
-                List<PQTree> toDelete = new LinkedList<>();
+                List<PQTree> toDelete = new LinkedList<PQTree>();
                 for(PQTree indicator:directionIndicators) {
                     if (!pertinentRoot.contains(indicator)) toDelete.add(indicator);
                 }
@@ -164,7 +164,7 @@ public class PlanarEmbedding {
             }
             
             // - add l1, ..., lk to the upward embedding
-            embedding[vNumber-1] = new LinkedList<>();
+            embedding[vNumber-1] = new LinkedList<Integer>();
             for(PQTree leaf:pertinentLeaves) {
                 if (leaf.nodeIndex==vNumber) {
                     embedding[vNumber-1].add(nodeParent.get(leaf));
@@ -193,7 +193,7 @@ public class PlanarEmbedding {
 //                        if (di2.direction == PQTree.DIRECTION_INDICATOR_LEFT) {
                         if (DEBUG>=1) System.out.println("reversing the upward embedding because of: " + di2);
                         // reverse the upward embedding:
-                        List<Integer> tmp = new LinkedList<>();
+                        List<Integer> tmp = new LinkedList<Integer>();
                         tmp.addAll(embedding[di2.nodeIndex-1]);
                         embedding[di2.nodeIndex-1].clear();
                         for(int v:tmp) {
@@ -204,7 +204,7 @@ public class PlanarEmbedding {
             } else {
                 int insertionIndex = -1;
                 // fullParent.children.removeAll(directionIndicators);
-                List<PQTree> removedIndicators = new LinkedList<>();
+                List<PQTree> removedIndicators = new LinkedList<PQTree>();
                 for(PQTree tmp:directionIndicators) {   
                     if (fullParent.recursivelyRemoveLeafNotThroughQNodes(tmp)) {
                         removedIndicators.add(tmp);
@@ -249,7 +249,7 @@ public class PlanarEmbedding {
     //                        if (di2.direction == PQTree.DIRECTION_INDICATOR_LEFT) {
                                 if (DEBUG>=1) System.out.println("reversing the upward embedding because of: " + di2);
                                 // reverse the upward embedding:
-                                List<Integer> tmp = new LinkedList<>();
+                                List<Integer> tmp = new LinkedList<Integer>();
                                 tmp.addAll(embedding[di2.nodeIndex-1]);
                                 embedding[di2.nodeIndex-1].clear();
                                 for(int v:tmp) {
@@ -293,7 +293,7 @@ public class PlanarEmbedding {
         
         for(int i = 0;i<n;i++) {
             int v = nodeWithNumber[i];
-            translated[v] = new LinkedList<>();
+            translated[v] = new LinkedList<Integer>();
             if (embedding[i]!=null) {
                 for(int stNumber:embedding[i]) {
                     if (DEBUG>=1) System.out.println("translateEmbeddingToNodeIndexes: " + stNumber + " -> " + nodeWithNumber[stNumber-1]);
@@ -322,7 +322,7 @@ public class PlanarEmbedding {
         boolean newNode[] = new boolean[n];
         for(int i = 0;i<n;i++) {
             newNode[i] = true;
-            embedding[i] = new LinkedList<>();
+            embedding[i] = new LinkedList<Integer>();
             if (upwardEmbedding[i]!=null) {
                 embedding[i].addAll(upwardEmbedding[i]);
             }
@@ -355,11 +355,11 @@ public class PlanarEmbedding {
     // in a clock-wise order, and starting with the lowest indexed node
     public static List<List<Integer>> faces(List<Integer>[] embedding) {
         int n = embedding.length;
-        List<List<Integer>> faces = new LinkedList<>();
+        List<List<Integer>> faces = new LinkedList<List<Integer>>();
         
         for(int v1 = 0;v1<n;v1++) {
             for(int v2:embedding[v1]) {
-                List<Integer> face = new LinkedList<>();
+                List<Integer> face = new LinkedList<Integer>();
                 face.add(v1);
                 face.add(v2);
                 getFace(embedding, face);

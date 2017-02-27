@@ -434,7 +434,7 @@ public class OrthographicEmbeddingResult {
             if (w!=null) {
                 target = w.v;
             } else {
-                List<Integer> visited = new LinkedList<>();
+                List<Integer> visited = new LinkedList<Integer>();
                 visited.add(v.v);
                 target = edge.m_b;
                 while(target>=embedding.length) {
@@ -461,7 +461,7 @@ public class OrthographicEmbeddingResult {
             if (v!=null) {
                 target = v.v;
             } else {
-                List<Integer> visited = new LinkedList<>();
+                List<Integer> visited = new LinkedList<Integer>();
                 visited.add(w.v);
                 target = edge.m_a;
                 while(target>=embedding.length) {
@@ -491,8 +491,8 @@ public class OrthographicEmbeddingResult {
         if ((oev==null || (oev.angle==OEElement.LEFT || oev.angle==OEElement.RIGHT)) &&
             (oew==null || (oew.angle==OEElement.LEFT || oew.angle==OEElement.RIGHT))) {
             // Find the vertical ranges of movement of each vertex:
-            List<Integer> group_v = new LinkedList<>();
-            List<Integer> group_w = new LinkedList<>();
+            List<Integer> group_v = new LinkedList<Integer>();
+            List<Integer> group_w = new LinkedList<Integer>();
             Pair<Double,Double> range_v = nodeVerticalWiggleRoom(edge.m_a, group_v);
             Pair<Double,Double> range_w = nodeVerticalWiggleRoom(edge.m_b, group_w);
 
@@ -506,7 +506,7 @@ public class OrthographicEmbeddingResult {
                 double new_y = (overlap_y1+overlap_y2)/2;
 
                 // check if the edge would work:
-                List<Integer> toIgnore = new LinkedList<>();
+                List<Integer> toIgnore = new LinkedList<Integer>();
                 toIgnore.addAll(group_v);
                 toIgnore.addAll(group_w);
                 double min_x = x[edge.m_a];
@@ -578,8 +578,8 @@ public class OrthographicEmbeddingResult {
         if ((oev==null || (oev.angle==OEElement.UP || oev.angle==OEElement.DOWN)) &&
             (oew==null || (oew.angle==OEElement.UP || oew.angle==OEElement.DOWN))) {
             // Find the horizontal ranges of movement of each vertex:
-            List<Integer> group_v = new LinkedList<>();
-            List<Integer> group_w = new LinkedList<>();
+            List<Integer> group_v = new LinkedList<Integer>();
+            List<Integer> group_w = new LinkedList<Integer>();
             Pair<Double,Double> range_v = nodeHorizontalWiggleRoom(edge.m_a, group_v);
             Pair<Double,Double> range_w = nodeHorizontalWiggleRoom(edge.m_b, group_w);
 
@@ -596,7 +596,7 @@ public class OrthographicEmbeddingResult {
 //                edges[edge.m_a][edge.m_b] = false;
 //                edges[edge.m_b][edge.m_a] = false;
 //                if (edgeFits(new_x,y[edge.m_a], new_x, y[edge.m_b])) {
-                List<Integer> toIgnore = new LinkedList<>();
+                List<Integer> toIgnore = new LinkedList<Integer>();
                 toIgnore.addAll(group_v);
                 toIgnore.addAll(group_w);
                 double min_y = y[edge.m_a];
@@ -676,7 +676,7 @@ public class OrthographicEmbeddingResult {
     */
     public Pair<Double,Double> nodeHorizontalWiggleRoom(int vertex, List<Integer> nodeGroup) {
         nodeGroup.clear();
-        List<Integer> open = new LinkedList<>();
+        List<Integer> open = new LinkedList<Integer>();
         open.add(vertex);
 
         // Find all the nodes that have vertical connections:
@@ -697,7 +697,7 @@ public class OrthographicEmbeddingResult {
         if (DEBUG>=1) System.out.println("  Node " + vertex + "'s vertical connections:" + nodeGroup);
 
         // Find the wiggleRoom of all of them:
-        List<Pair<Double,Double>> wiggleRooms = new LinkedList<>();
+        List<Pair<Double,Double>> wiggleRooms = new LinkedList<Pair<Double,Double>>();
         for(Integer v:nodeGroup) wiggleRooms.add(nodeHorizontalWiggleRoomSingleNode(v));
 
         // Compute the intersection:
@@ -717,7 +717,7 @@ public class OrthographicEmbeddingResult {
     // Do the same thing for vertical:
     public Pair<Double,Double> nodeVerticalWiggleRoom(int vertex, List<Integer> nodeGroup) {
         nodeGroup.clear();
-        List<Integer> open = new LinkedList<>();
+        List<Integer> open = new LinkedList<Integer>();
         open.add(vertex);
 
         // Find all the nodes that have horizontal connections:
@@ -738,7 +738,7 @@ public class OrthographicEmbeddingResult {
         if (DEBUG>=1) System.out.println("  Node " + vertex + "'s horizontal connections:" + nodeGroup);
 
         // Find the wiggleRoom of all of them:
-        List<Pair<Double,Double>> wiggleRooms = new LinkedList<>();
+        List<Pair<Double,Double>> wiggleRooms = new LinkedList<Pair<Double,Double>>();
         for(Integer v:nodeGroup) wiggleRooms.add(nodeVerticalWiggleRoomSingleNode(v));
 
         // Compute the intersection:
@@ -772,7 +772,7 @@ public class OrthographicEmbeddingResult {
                     } else if (x[w]>x[vertex]+0.01) {
                         if (x[w]<max) max = x[w];
                     } else {
-                        return new Pair<>(x[vertex],x[vertex]);
+                        return new Pair<Double,Double>(x[vertex],x[vertex]);
                     }
                 }
             }
@@ -794,7 +794,7 @@ public class OrthographicEmbeddingResult {
             }
         }
 
-        return new Pair<>(min,max);
+        return new Pair<Double,Double>(min,max);
     }
 
 
@@ -814,7 +814,7 @@ public class OrthographicEmbeddingResult {
                     } else if (y[w]>y[vertex]+0.01) {
                         if (y[w]<max) max = y[w];
                     } else {
-                        return new Pair<>(y[vertex],y[vertex]);
+                        return new Pair<Double,Double>(y[vertex],y[vertex]);
                     }
                 }
             }
@@ -836,7 +836,7 @@ public class OrthographicEmbeddingResult {
             }
         }
 
-        return new Pair<>(min,max);
+        return new Pair<Double,Double>(min,max);
     }
 
 
@@ -853,13 +853,13 @@ public class OrthographicEmbeddingResult {
 
 
     public List<Pair<Integer,Integer>> findNonOrthogonalEdges() {
-        List<Pair<Integer,Integer>> l = new LinkedList<>();
+        List<Pair<Integer,Integer>> l = new LinkedList<Pair<Integer,Integer>>();
         for(int i = 0;i<edges.length;i++) {
             for(int j = 0;j<edges.length;j++) {
                 if (edges[i][j] &&
                     Math.abs(x[i]-x[j])>0.01 &&
                     Math.abs(y[i]-y[j])>0.01) {
-                    l.add(new Pair<>(i,j));
+                    l.add(new Pair<Integer,Integer>(i,j));
                 }
             }
         }
@@ -868,8 +868,8 @@ public class OrthographicEmbeddingResult {
 
 
     public void gridAlign(double step) {
-        List<Double> xvalues = new LinkedList<>();
-        List<Double> yvalues = new LinkedList<>();
+        List<Double> xvalues = new LinkedList<Double>();
+        List<Double> yvalues = new LinkedList<Double>();
 
         for(double tmp:y) if (!yvalues.contains(tmp)) yvalues.add(tmp);
         for(double tmp:x) if (!xvalues.contains(tmp)) xvalues.add(tmp);
@@ -879,7 +879,7 @@ public class OrthographicEmbeddingResult {
 
         // filter those that are too similar (proably the same but for precission errors):
         double threshold = 0.01;
-        List<Double> toDelete = new LinkedList<>();
+        List<Double> toDelete = new LinkedList<Double>();
         for(int i = 0;i<xvalues.size()-1;i++) {
             if (Math.abs(xvalues.get(i)-xvalues.get(i+1))<threshold)
                 toDelete.add(xvalues.get(i+1));

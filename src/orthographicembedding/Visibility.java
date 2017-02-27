@@ -114,8 +114,8 @@ public class Visibility {
     the grid step size is given in "step"
     */
     public void gridAlign(double step) {
-        List<Double> xvalues = new LinkedList<>();
-        List<Double> yvalues = new LinkedList<>();
+        List<Double> xvalues = new LinkedList<Double>();
+        List<Double> yvalues = new LinkedList<Double>();
         
         for(double y:horizontal_y) if (!yvalues.contains(y)) yvalues.add(y);
         for(double y:vertical_y1) if (!yvalues.contains(y)) yvalues.add(y);
@@ -129,7 +129,7 @@ public class Visibility {
         
         // filter those that are too similar (proably the same but for precission errors):
         double threshold = 0.00001;
-        List<Double> toDelete = new LinkedList<>();
+        List<Double> toDelete = new LinkedList<Double>();
         for(int i = 0;i<xvalues.size()-1;i++) {
             if (Math.abs(xvalues.get(i)-xvalues.get(i+1))<threshold) 
                 toDelete.add(xvalues.get(i+1));
@@ -194,8 +194,8 @@ public class Visibility {
             // W-VISIBILITY2 algorithm
             // from: "A Unified Approach to Visibility Representations of Planar Graphs"
             // 1 find the blocks:
-            List<Integer> T = new ArrayList<>();
-            List<Integer> S = new ArrayList<>();
+            List<Integer> T = new ArrayList<Integer>();
+            List<Integer> S = new ArrayList<Integer>();
             T.addAll(blocks.keySet());
             
             // we randomize it (to get differnt outputs every time):
@@ -240,7 +240,7 @@ public class Visibility {
                 if (DEBUG>=1) System.out.println("W-VISIBILITY2: S = " + S);
                 for(int c:cutNodes.keySet()) {
                     List<Integer> blocksWithC = cutNodes.get(c);
-                    List<Integer> newBlocks = new LinkedList<>();
+                    List<Integer> newBlocks = new LinkedList<Integer>();
                     boolean intersectionWithS = false;
                     for(Integer bc:blocksWithC) {
                         if (S.contains(bc)) intersectionWithS = true;
@@ -581,9 +581,9 @@ public class Visibility {
                         vertical_y1[idx] = Math.min(horizontal_y[i],horizontal_y[j]);
                         vertical_y2[idx] = Math.max(horizontal_y[i],horizontal_y[j]);
                         
-                        if (vertexEdges[i]==null) vertexEdges[i]=new LinkedList<>();
+                        if (vertexEdges[i]==null) vertexEdges[i]=new LinkedList<Integer>();
                         vertexEdges[i].add(idx);
-                        if (vertexEdges[j]==null) vertexEdges[j]=new LinkedList<>();
+                        if (vertexEdges[j]==null) vertexEdges[j]=new LinkedList<Integer>();
                         vertexEdges[j].add(idx);
                     }
                 }
@@ -639,7 +639,7 @@ public class Visibility {
                 if (graph[j][i]!=0) indegree[i]++;
         }
         
-        List<Integer> Q = new LinkedList<>();
+        List<Integer> Q = new LinkedList<Integer>();
         for(int v = 0;v<n;v++) {
             if (indegree[v]==0) Q.add(v);
         }
@@ -670,7 +670,7 @@ public class Visibility {
                     int idx2b = idx2-1;
                     if (idx2b<0) idx2b=face2.size()-1;
                     if (face1.get(idx1b).equals(face2.get(idx2b))) {
-                            return new Pair<>(face1.get(idx1),face1.get(idx1b));
+                            return new Pair<Integer,Integer>(face1.get(idx1),face1.get(idx1b));
                     }
                 }
             }
@@ -721,11 +721,11 @@ public class Visibility {
     public boolean reorganizeAttempt(boolean []alreadyMoved) {        
         for(int i = 0;i<graph.length;i++) {
             // find the number of different contact points:
-            List<Integer> upContacts = new LinkedList<>();
-            List<Integer> downContacts = new LinkedList<>();
-            List<Integer> upContactsIdx = new LinkedList<>();
-            List<Integer> downContactsIdx = new LinkedList<>();
-            List<Integer> allContacts = new LinkedList<>();
+            List<Integer> upContacts = new LinkedList<Integer>();
+            List<Integer> downContacts = new LinkedList<Integer>();
+            List<Integer> upContactsIdx = new LinkedList<Integer>();
+            List<Integer> downContactsIdx = new LinkedList<Integer>();
+            List<Integer> allContacts = new LinkedList<Integer>();
             int leftMostUp = -1;
             int rightMostUp = -1;
             int leftMostDown = -1;

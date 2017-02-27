@@ -48,7 +48,7 @@ public class PQTree {
         if (nodeType==LEAF_NODE) {
             children = null;
         } else {
-            children = new LinkedList<>();
+            children = new LinkedList<PQTree>();
         }
         parent = a_parent;
         if (parent!=null) parent.children.add(this);
@@ -64,7 +64,7 @@ public class PQTree {
     }
     
     public List<PQTree> allNodes() {
-        List<PQTree> l = new LinkedList<>();
+        List<PQTree> l = new LinkedList<PQTree>();
         allNodes(l);
         return l;
     }
@@ -489,10 +489,10 @@ public class PQTree {
                 } else if (counts[LABEL_PARTIAL]==1 && (counts[LABEL_EMPTY]>0 || counts[LABEL_FULL]>0)) {
                     if (DEBUG>=1) System.out.println("Q2/Q3: 1 partials");
                     // 1 partial Q-node:
-                    List<PQTree> newChildrenEF = new LinkedList<>();
-                    List<PQTree> newChildrenFE = new LinkedList<>();
-                    List<PQTree> reverseIfEF = new LinkedList<>();
-                    List<PQTree> reverseIfFE = new LinkedList<>();
+                    List<PQTree> newChildrenEF = new LinkedList<PQTree>();
+                    List<PQTree> newChildrenFE = new LinkedList<PQTree>();
+                    List<PQTree> reverseIfEF = new LinkedList<PQTree>();
+                    List<PQTree> reverseIfFE = new LinkedList<PQTree>();
                     int EFstate = 0;  // 0 : empty, 1: full
                     int FEstate = 0;  // 0 : full, 1: empty
                     for(PQTree child:children) {
@@ -589,7 +589,7 @@ public class PQTree {
                 } else {
                     // 2 partial Q-nodes:
                     if (DEBUG>=1) System.out.println("Q2/Q3: 2 partials");
-                    List<PQTree> newChildren = new LinkedList<>();
+                    List<PQTree> newChildren = new LinkedList<PQTree>();
                     int status = 0; // 0 = empty, 1 = full, 2 = empty again, 3: error
                     for(PQTree child:children) {
                         if (child.nodeType == DIRECTION_INDICATOR) {
@@ -684,8 +684,8 @@ public class PQTree {
     }
     
     public boolean reduce(int index) throws Exception {
-        List<PQTree> tmp = new LinkedList<>();
-        List<PQTree> S = new LinkedList<>();
+        List<PQTree> tmp = new LinkedList<PQTree>();
+        List<PQTree> S = new LinkedList<PQTree>();
         getLeaves(tmp);
         for(PQTree leaf:tmp) if (leaf.nodeIndex==index) S.add(leaf);
         
@@ -694,7 +694,7 @@ public class PQTree {
     
     public boolean reduce(List<PQTree> S) throws Exception {
         Set<PQTree> processed = new HashSet<PQTree>();
-        List<PQTree> queue = new LinkedList<>();
+        List<PQTree> queue = new LinkedList<PQTree>();
                         
         // add all the leaves of the tree to the queue
         getLeaves(queue);
@@ -772,7 +772,7 @@ public class PQTree {
     
     public void reverse() {
         if (nodeType==Q_NODE) {
-            List<PQTree> tmp = new LinkedList<>();
+            List<PQTree> tmp = new LinkedList<PQTree>();
             tmp.addAll(children);
             children.clear();
             

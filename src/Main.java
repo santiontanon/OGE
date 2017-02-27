@@ -53,7 +53,7 @@ public class Main {
         if (randomSeed != null) r = new Random(randomSeed);
 
         List<List<Integer>> disconnectedGraphs = DisconnectedGraphs.findDisconnectedGraphs(graph);
-        List<OrthographicEmbeddingResult> disconnectedEmbeddings = new ArrayList<>();
+        List<OrthographicEmbeddingResult> disconnectedEmbeddings = new ArrayList<OrthographicEmbeddingResult>();
         for(List<Integer> nodeSubset:disconnectedGraphs) {
             // calculate the embedding:
             int [][]g = DisconnectedGraphs.subgraph(graph, nodeSubset);

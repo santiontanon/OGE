@@ -75,7 +75,7 @@ public class STNumbering {
     
     public static int[] stNumbering(int graph[][], int s, Random r) throws Exception {
         int t = -1;
-        List<Integer> candidates = new ArrayList<>();
+        List<Integer> candidates = new ArrayList<Integer>();
         for(int i = 0;i<graph.length;i++) {
             if (graph[s][i]==1) {
                 candidates.add(i);
@@ -177,7 +177,7 @@ public class STNumbering {
         oldNodes[t] = true;
         oldEdges[s][t] = true;
         oldEdges[t][s] = true;
-        List<Integer> stack = new LinkedList<>();
+        List<Integer> stack = new LinkedList<Integer>();
         stack.add(t);
         stack.add(s);
         int i = 0;
@@ -217,7 +217,7 @@ public class STNumbering {
     static List<Integer> PATHFINDER(int v, int graph[][], int treeGraph[][], 
                                     boolean [][]oldEdges, boolean []oldNodes, 
                                     int ancestors[][], int preorder[], int L[]) throws Exception {
-        List<Integer> path = new LinkedList<>();
+        List<Integer> path = new LinkedList<Integer>();
         int n = graph.length;
         // if there is a new cycle edge {v,w} with w -*-> v:
         for(int w = 0;w<n;w++) {
@@ -317,8 +317,8 @@ public class STNumbering {
     //  s, and t are the s and t nodes: s can be set to -1 if you want it to be determined automatically
     public static void depthFirstSpanningTree(int graph[][], int treeGraph[][], int ancestors[][], int T[], int preorder[], int L[], int s, int t) {
         int n = graph.length;
-        List<Integer> stack = new LinkedList<>();
-        List<Integer> parents = new LinkedList<>();
+        List<Integer> stack = new LinkedList<Integer>();
+        List<Integer> parents = new LinkedList<Integer>();
         for(int i = 0;i<graph.length;i++) T[i] = -1;        
         stack.add(t);
         parents.add(t);
@@ -351,7 +351,7 @@ public class STNumbering {
         
         // Compute the preorder:
         int counter = 1;
-        stack = new LinkedList<>();
+        stack = new LinkedList<Integer>();
         stack.add(t);
         while(!stack.isEmpty()) {
             int current = stack.remove(0);

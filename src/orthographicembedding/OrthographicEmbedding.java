@@ -335,14 +335,14 @@ public class OrthographicEmbedding {
 
     
     static OEVertex vertexOrtographicEmbedding(int v, int graph[][], Visibility Gamma, OEVertex embedding[]) {
-        List<OEElement> vertexEmbedding = new LinkedList<>();
+        List<OEElement> vertexEmbedding = new LinkedList<OEElement>();
         double x = -1,y = -1;
         int n = graph.length;
         double tolerance = 0.1;
         
         if (DEBUG>=1) System.out.println("Generating ortographic embedding for node " + v + ":");
-        List<Integer> edgesOnTop = new LinkedList<>();
-        List<Integer> edgesBelow = new LinkedList<>();
+        List<Integer> edgesOnTop = new LinkedList<Integer>();
+        List<Integer> edgesBelow = new LinkedList<Integer>();
         double vertexY = Gamma.horizontal_y[v];
         for(int w = 0;w<n;w++) {
             if (graph[v][w]!=0) {

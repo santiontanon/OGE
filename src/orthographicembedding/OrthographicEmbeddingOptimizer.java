@@ -60,12 +60,12 @@ public class OrthographicEmbeddingOptimizer {
         }
 
         // find all the edges that connect v to all the other graph nodes
-        List<Integer> verticesToDelete = new LinkedList<>();
+        List<Integer> verticesToDelete = new LinkedList<Integer>();
         boolean [][]edgesToIgnore = new boolean[n2][n2];
-        List<Pair<Integer,Integer>> open = new LinkedList<>();
+        List<Pair<Integer,Integer>> open = new LinkedList<Pair<Integer,Integer>>();
         for(int i = 0;i<n2;i++) {
             if (o.edges[v][i] ||
-                o.edges[i][v]) open.add(new Pair<>(v,i));
+                o.edges[i][v]) open.add(new Pair<Integer,Integer>(v,i));
         }
         while(!open.isEmpty()) {
             Pair<Integer,Integer> current = open.remove(0);
@@ -77,7 +77,7 @@ public class OrthographicEmbeddingOptimizer {
                 verticesToDelete.add(current.m_b);
                 for(int i = 0;i<n2;i++) {
                     if (o.edges[current.m_b][i] || o.edges[i][current.m_b]) {
-                        Pair<Integer,Integer> next = new Pair<>(current.m_b,i);
+                        Pair<Integer,Integer> next = new Pair<Integer,Integer>(current.m_b,i);
                         if (!open.contains(next) &&
                             !edgesToIgnore[current.m_b][i]) {
                             open.add(next);
@@ -287,13 +287,13 @@ public class OrthographicEmbeddingOptimizer {
             }
         }
 
-        return new Pair<>(length, nsegments);
+        return new Pair<Integer,Integer>(length, nsegments);
     }
     
 
     public static List<Pair<Integer,List<Pair<Integer,Integer>>>> findConnections(int v, int x, int y, OrthographicEmbeddingResult o, int om[][], int idx, int graph[][]) {
         int n = graph.length;
-        List<Pair<Integer,List<Pair<Integer,Integer>>>> result = new LinkedList<>();
+        List<Pair<Integer,List<Pair<Integer,Integer>>>> result = new LinkedList<Pair<Integer,List<Pair<Integer,Integer>>>>();
 
         if (DEBUG>=1) System.out.println("OrthographicEmbeddingOptimizer.findConnections for " + v + " starting at " + x + "," + y);
         
@@ -327,7 +327,7 @@ public class OrthographicEmbeddingOptimizer {
                     if (om[x1][y1]!=1) om[x1][y1] = idx;
                 }
                 
-                result.add(new Pair<>(i,path));
+                result.add(new Pair<Integer,List<Pair<Integer,Integer>>>(i,path));
             }
         }
         
@@ -347,13 +347,13 @@ public class OrthographicEmbeddingOptimizer {
         // initialize:
         for(int i = 0;i<dy;i++) {
             for(int j = 0;j<dx;j++) {
-                parents[j][i] = new LinkedList<>();
+                parents[j][i] = new LinkedList<Integer>();
                 cost[j][i] = 0;
                 bends[j][i] = 0;
             }
         }
         
-        List<Integer> open = new LinkedList<>();
+        List<Integer> open = new LinkedList<Integer>();
         open.add(x1+y1*dx);
         while(!open.isEmpty()) {
             int current = open.remove(0);
@@ -401,14 +401,14 @@ public class OrthographicEmbeddingOptimizer {
         }
         
         // reconstruct the path:
-        List<Pair<Integer,Integer>> path = new LinkedList<>();
+        List<Pair<Integer,Integer>> path = new LinkedList<Pair<Integer,Integer>>();
         if (parents[x2][y2].isEmpty()) return null;
         int current = x2+y2*dx;
         int start = x1+y1*dx;
         int offs = 0;
         while(current!=start) {
             int next = current;
-            path.add(0,new Pair<>(current%dx,current/dx));
+            path.add(0,new Pair<Integer,Integer>(current%dx,current/dx));
             if (offs==0) {
                 next = parents[current%dx][current/dx].get(0);
             } else {
@@ -421,11 +421,11 @@ public class OrthographicEmbeddingOptimizer {
             offs = next - current;
             current = next;
         }
-        path.add(0,new Pair<>(current%dx,current/dx));
+        path.add(0,new Pair<Integer,Integer>(current%dx,current/dx));
         if (DEBUG>=1) System.out.println("full path to (" + x2 + "," + y2 + ") cost " + cost[x2][y2] + "," + bends[x2][y2] + ": " + path);
                 
         // only leave the bending points:
-        List<Pair<Integer,Integer>> toDelete = new LinkedList<>();
+        List<Pair<Integer,Integer>> toDelete = new LinkedList<Pair<Integer,Integer>>();
         Pair<Integer,Integer> previous1 = null;
         Pair<Integer,Integer> previous2 = null;
         for(Pair<Integer,Integer> p:path) {
