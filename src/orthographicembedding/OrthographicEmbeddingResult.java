@@ -36,6 +36,24 @@ public class OrthographicEmbeddingResult {
         edges = new boolean[n][n];        
     }
     
+    /*
+    @Override
+    public OrthographicEmbeddingResult clone() {
+        int n = embedding.length;
+        OrthographicEmbeddingResult r = new OrthographicEmbeddingResult(n);
+        r.embedding = embedding;    // this part does not need to be cloned
+        for(int i = 0;i<n;i++) {
+            r.nodeIndexes[i] = nodeIndexes[i];
+            r.x[i] = x[i];
+            r.y[i] = y[i];
+            for(int j = 0;j<n;j++) {
+                r.edges[i][j] = edges[i][j];
+            }
+        }
+        
+        return r;
+    }
+    */
 
     public OrthographicEmbeddingResult(OEVertex a_embedding[], Visibility visibility, boolean fixNonOrthogonal) throws Exception {
         embedding = a_embedding;
