@@ -18,7 +18,12 @@ import util.Pair;
 public class OrthographicEmbeddingOptimizer {
     
     public static int DEBUG = 0;
-    
+
+
+    public static OrthographicEmbeddingResult optimize(OrthographicEmbeddingResult o, int graph[][]) {
+        return optimize(o, graph, new SegmentLengthEmbeddingComparator());
+    }
+   
     public static OrthographicEmbeddingResult optimize(OrthographicEmbeddingResult o, int graph[][], EmbeddingComparator comparator) {
         int n = graph.length;        
         boolean change;
