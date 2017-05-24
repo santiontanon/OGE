@@ -68,7 +68,7 @@ public class Main {
 //            System.out.println(g_oe);
             
             if (optimize) {
-                OrthographicEmbeddingOptimizer.optimize(g_oe, g, new SegmentLengthEmbeddingComparator());
+                g_oe = OrthographicEmbeddingOptimizer.optimize(g_oe, g, new SegmentLengthEmbeddingComparator());
                 if (!g_oe.sanityCheck(false)) System.err.println("The orthographic projection after optimization contains errors!");
             }
             disconnectedEmbeddings.add(g_oe);
