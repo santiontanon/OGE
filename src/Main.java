@@ -30,9 +30,10 @@ public class Main {
     
     static String inputFileName = null;
     static String outputFileName = null;
+    static boolean fixNonOrthogonal = true;
     static boolean simplify = true;
-    static boolean correct = true;
     static boolean optimize = true;
+    static int numberOfAttempts = 1;
     static String output_type = output_type_txt;
 
     static String outputPNGName = null;
@@ -58,20 +59,26 @@ public class Main {
         List<OrthographicEmbeddingResult> disconnectedEmbeddings = new ArrayList<OrthographicEmbeddingResult>();
         for(List<Integer> nodeSubset:disconnectedGraphs) {
             // calculate the embedding:
+            OrthographicEmbeddingResult best_g_oe = null;
             int [][]g = DisconnectedGraphs.subgraph(graph, nodeSubset);
-            OrthographicEmbeddingResult g_oe = OrthographicEmbedding.orthographicEmbedding(g,simplify, correct, r); 
-            if (g_oe==null) {
-                System.err.println("No orthographic projection could be found! verify the input graph is planar.");
-                System.exit(1);
+            SegmentLengthEmbeddingComparator comparator = new SegmentLengthEmbeddingComparator();
+            for(int attempt = 0;attempt<numberOfAttempts;attempt++) {
+                OrthographicEmbeddingResult g_oe = OrthographicEmbedding.orthographicEmbedding(g,simplify, fixNonOrthogonal, r); 
+                if (g_oe==null) continue;
+                if (!g_oe.sanityCheck(false)) throw new Exception("The orthographic projection contains errors!");
+                if (optimize) {
+                    g_oe = OrthographicEmbeddingOptimizer.optimize(g_oe, g, comparator);
+                    if (!g_oe.sanityCheck(false)) throw new Exception("The orthographic projection after optimization contains errors!");
+                }
+                if (best_g_oe==null) {
+                    best_g_oe = g_oe;
+                } else {
+                    if (comparator.compare(g_oe, best_g_oe)<0) {
+                        best_g_oe = g_oe;
+                    }
+                }
             }
-            if (!g_oe.sanityCheck(false)) System.err.println("The orthographic projection contains errors!");
-//            System.out.println(g_oe);
-            
-            if (optimize) {
-                g_oe = OrthographicEmbeddingOptimizer.optimize(g_oe, g, new SegmentLengthEmbeddingComparator());
-                if (!g_oe.sanityCheck(false)) System.err.println("The orthographic projection after optimization contains errors!");
-            }
-            disconnectedEmbeddings.add(g_oe);
+            disconnectedEmbeddings.add(best_g_oe);
         }
         OrthographicEmbeddingResult oe = DisconnectedGraphs.mergeDisconnectedEmbeddingsSideBySide(disconnectedEmbeddings, disconnectedGraphs, 1.0);
         
@@ -97,6 +104,9 @@ public class Main {
             } else if (args[i].startsWith("-optimize")) {
                 if (args[i].equals("-optimize:true")) optimize = true;
                 if (args[i].equals("-optimize:false")) optimize = false;
+            } else if (args[i].startsWith("-attempts:")) {
+                String str = args[i].substring(10);
+                numberOfAttempts = Integer.parseInt(str);
             } else if (args[i].startsWith("-rs:")) {
                 String str = args[i].substring(4);
                 randomSeed = Long.parseLong(str);
@@ -130,6 +140,7 @@ public class Main {
         System.out.println("  -png:filename : saves a graphical version of the output as a .png file");
         System.out.println("  -simplify:true/false : defaults to true, applies a filter to try to reduce unnecessary auxiliary vertices.");
         System.out.println("  -optimize:true/false : defaults to true, postprocesses the output to try to make it more compact.");
+        System.out.println("  -attempts:XXX : defaults to 1, number of random embeddings that will be generated (only the best one will be finally selected).");
         System.out.println("  -rs:XXX : specifies the random seed for the random number generator.");
         System.out.println("");
     }

@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import util.Pair;
+import util.Permutations;
 
 /**
  *
@@ -86,26 +87,36 @@ public class Visibility {
     public void copy(Visibility v) {
         r = v.r;
         graph = v.graph;
+//        graph = new int[v.graph.length][v.graph[0].length];
+//        for(int i = 0;i<v.graph.length;i++) {
+//            for(int j = 0;j<v.graph[0].length;j++) {
+//                graph[i][j] = v.graph[i][j];
+//            }
+//        }      
         nEdges = v.nEdges;
         edgeIndexes = v.edgeIndexes;
         edge_n1 = v.edge_n1;
         edge_n2 = v.edge_n2;
         
-        horizontal_y = new double[v.horizontal_y.length];
-        horizontal_x1 = new double[v.horizontal_x1.length];
-        horizontal_x2 = new double[v.horizontal_x2.length];
-        vertical_x = new double[v.vertical_x.length];
-        vertical_y1 = new double[v.vertical_y1.length];
-        vertical_y2 = new double[v.vertical_y2.length];
-        for(int i = 0;i<horizontal_y.length;i++) {
-            horizontal_y[i] = v.horizontal_y[i];
-            horizontal_x1[i] = v.horizontal_x1[i];
-            horizontal_x1[i] = v.horizontal_x1[i];
+        if (v.horizontal_y!=null) {
+            horizontal_y = new double[v.horizontal_y.length];
+            horizontal_x1 = new double[v.horizontal_x1.length];
+            horizontal_x2 = new double[v.horizontal_x2.length];
+            for(int i = 0;i<v.horizontal_y.length;i++) {
+                horizontal_y[i] = v.horizontal_y[i];
+                horizontal_x1[i] = v.horizontal_x1[i];
+                horizontal_x2[i] = v.horizontal_x2[i];
+            }
         }
-        for(int i = 0;i<vertical_x.length;i++) {
-            vertical_x[i] = v.vertical_x[i];
-            vertical_y1[i] = v.vertical_y1[i];
-            vertical_y2[i] = v.vertical_y2[i];
+        if (v.vertical_x!=null) {
+            vertical_x = new double[v.vertical_x.length];
+            vertical_y1 = new double[v.vertical_y1.length];
+            vertical_y2 = new double[v.vertical_y2.length];
+            for(int i = 0;i<v.vertical_x.length;i++) {
+                vertical_x[i] = v.vertical_x[i];
+                vertical_y1[i] = v.vertical_y1[i];
+                vertical_y2[i] = v.vertical_y2[i];
+            }
         }
     }
     
@@ -174,7 +185,7 @@ public class Visibility {
     
     
     // W-Visibility algorithm (reference)
-    public boolean WVisibility() throws Exception {        
+    public boolean WVisibility() throws Exception {
         if (DEBUG>=1) System.out.println("Blocks and cutnodes (for a graph with " + graph.length + " nodes)");
         Pair<HashMap<Integer,List<Integer>>,HashMap<Integer,List<Integer>>> tmp = Blocks.blocks(graph);
         HashMap<Integer,List<Integer>> blocks = tmp.m_a;
@@ -351,7 +362,6 @@ public class Visibility {
             
             gridAlign(1.0);
             if (!sanityCheck()) {
-                System.err.println("WVisibility: Visibility representation is not consistent after merging!");
                 for(int i = 0;i<n;i++) {
                     System.err.print("{");
                     for(int j = 0;j<n;j++) {
@@ -359,7 +369,7 @@ public class Visibility {
                     }
                     System.err.println("},");
                 }
-                return false;
+                throw new Exception("WVisibility: Visibility representation is not consistent after merging!");
             }            
             return true;
         }
@@ -401,6 +411,23 @@ public class Visibility {
             }
         }
         return WVisibility2Connected(stNumbering);
+    }
+    
+    
+    public List<Visibility> allPossibleWVisibility2Connected() throws Exception {
+        List<Visibility> l = new ArrayList<Visibility>();
+        List<int []> stNumberings = STNumbering.allSTNumberings(graph);
+        for(int []stNumbering:stNumberings) {
+            if (!STNumbering.verifySTNumbering(graph, stNumbering)) {
+                System.err.println("Wrong STNumbering!");
+                System.err.println(Arrays.toString(stNumbering));
+                throw new Exception("Wrong STNumbering!");
+            }
+            Visibility v = new Visibility(this);
+            v.WVisibility2Connected(stNumbering);
+            l.add(v);
+        }
+        return l;
     }
     
     
@@ -872,6 +899,11 @@ public class Visibility {
     
     public boolean sanityCheck() {
         for(int i = 0;i<vertical_x.length;i++) {
+            if (vertical_y2[i]==vertical_y1[i]) {
+                System.err.println("vertical edge with negative or zero length: " + i);
+                System.err.println(i + ": " + vertical_x[i] + ", [" + vertical_y1[i] + "," + vertical_y2[i] + "]");
+                return false;
+            }
             for(int j = i+1;j<vertical_x.length;j++) {
                 if (Math.abs(vertical_x[i] - vertical_x[j])<0.01) {
                     if (vertical_y1[i]<vertical_y2[j] &&
@@ -884,8 +916,26 @@ public class Visibility {
                 }
             }        
         }
+        for(int i = 0;i<horizontal_y.length;i++) {
+            if (horizontal_x2[i]==horizontal_x1[i]) {
+                System.err.println("horizontal vertex with negative or zero length: " + i);
+                System.err.println(i + ": " + horizontal_y[i] + ", [" + horizontal_x1[i] + "," + horizontal_x2[i] + "]");
+                return false;
+            }
+            for(int j = i+1;j<horizontal_y.length;j++) {
+                if (Math.abs(horizontal_y[i] - horizontal_y[j])<0.01) {
+                    if (horizontal_x1[i]<horizontal_x2[j] &&
+                        horizontal_x1[j]<horizontal_x2[i]) {
+                        System.err.println("horizontal vertices cross: " + i + ", " + j);
+                        System.err.println(i + ": " + horizontal_y[i] + ", [" + horizontal_x1[i] + "," + horizontal_x2[i] + "]");
+                        System.err.println(j + ": " + horizontal_y[j] + ", [" + horizontal_x1[j] + "," + horizontal_x2[i] + "]");
+                        return false;
+                    }
+                }
+            }        
+        }
         
         return true;
     }
- 
+     
 }

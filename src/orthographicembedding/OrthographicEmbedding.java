@@ -6,7 +6,7 @@
 
 package orthographicembedding;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -24,9 +24,7 @@ public class OrthographicEmbedding {
         // Algorithm from: "Planar Grid Embedding in Linear Time" Tamasia and Tollis
         // Step 1: Construct a visibility representation Gamma for the graph
         Visibility Gamma = new Visibility(graph, r);
-        if (!Gamma.WVisibility()) {
-            return null;
-        }        
+        if (!Gamma.WVisibility()) return null;
         Gamma.reorganize();
         
         // from this point on, we assume that the result is aligned with a grid size od 1.0
@@ -47,114 +45,6 @@ public class OrthographicEmbedding {
         }
     }        
     
-
-    /*
-    public static void attemptCompleteSimplification(OEVertex embedding[]) {
-        int n = embedding.length;
-        
-        // Step 3: Let H be the orthogonal representation of G'. 
-        //         Simplify H by means of the bend-stretching transformations
-        for(int v = 0;v<n;v++) {
-            for(OEElement oev:embedding[v].embedding) {
-                int w = oev.dest;
-                OEElement oew = sym(oev,embedding);
-                // Apply T1:
-                if (oev.bends>=1 && oew.bends>=1) {
-                    if (DEBUG>=1) System.out.println("T1: " + v + "->" + w);
-                    int x = oev.bends;
-                    int y = oew.bends;
-                    oev.bends = Math.max(0,x-y);
-                    oew.bends = Math.max(0,y-x);
-                }
-            }
-        }
-        for(int v = 0;v<n;v++) {
-            // Apply T2: (case 1)
-            int min = -1;
-            for(OEElement oev:embedding[v].embedding) {
-                if (min==-1 || oev.bends<min) {
-                    min = oev.bends;
-                }
-            }
-            if (min>0) {
-                if (DEBUG>=1) System.out.println("T2(1): " + v);
-                for(OEElement oev:embedding[v].embedding) {
-                    oev.bends-=min;
-                    OEElement oew = sym(oev,embedding);
-                    // update the angle: (this was not in the original algorithm, 
-                    // but it's necessary, since I store absolute angles, instead of relative ones
-                    oew.angle = (oew.angle+min)%4;
-                }
-            }
-
-            // Apply T2: (case 2)
-            min = -1;
-            for(OEElement oev:embedding[v].embedding) {
-                OEElement oew = sym(oev,embedding);
-                if (min==-1 || oew.bends<min) {
-                    min = oew.bends;
-                }
-            }
-            if (min>0) {
-                if (DEBUG>=1) System.out.println("T2(2): " + v);
-                for(OEElement oev:embedding[v].embedding) {
-                    OEElement oew = sym(oev,embedding);
-                    oew.bends-=min;
-                    // update the angle: (this was not in the original algorithm, 
-                    // but it's necessary, since I store absolute angles, instead of relative ones
-                    oev.angle = (oev.angle+min)%4;
-                }
-            }
-        }
-
-        for(int v = 0;v<n;v++) {
-            if (embedding[v].embedding.size()>1 && embedding[v].embedding.size()<=3) {
-                for(int e = 0;e<embedding[v].embedding.size();e++) {
-                    boolean tryagain = true;
-                    while(tryagain) {
-                        tryagain = false;
-                        // Apply T3: (case 1)
-                        int e2 = (e+1)%(embedding[v].embedding.size());
-                        int e3 = (e+2)%(embedding[v].embedding.size());
-                        OEElement oev = embedding[v].embedding.get(e);
-                        OEElement oev2 = embedding[v].embedding.get(e2);
-                        OEElement oev3 = embedding[v].embedding.get(e3);
-                        int e_angle = oev2.angle - oev.angle;
-                        int e2_angle = oev3.angle - oev2.angle;
-                        if (e_angle<0) e_angle+=4;
-                        if (e2_angle<0) e2_angle+=4;
-                        if (e_angle>=2 && oev2.bends>=1) {
-                            if (DEBUG>=1) System.out.println("T3(1): " + v + "->" + oev2.dest);
-                            if (DEBUG>=1) System.out.println("e: " + v + "->" + oev.dest + ", e': " + oev2.v + "->" + oev2.dest + ", angle(e) = " + e_angle + ", bends(e') = " + oev2.bends);
-                            int m = Math.min(e_angle-1, oev2.bends);
-                            oev2.angle-=m;
-                            if (oev2.angle<0) oev2.angle+=4;
-                            oev2.bends = oev2.bends - m;
-                            tryagain = true;
-                            if (DEBUG>=1) System.out.println("  result (e'): " + oev2);
-                            if (DEBUG>=1) System.out.println("  result (sym(e')): " + sym(oev2,embedding));
-                        }
-                        if (!tryagain) {
-                            // Apply T3: (case 2)
-                            OEElement oew2 = sym(oev2, embedding);
-                            if (e2_angle>=2 && oew2.bends>=1) {
-                                if (DEBUG>=1) System.out.println("T3(2): " + v + "->" + oev2.dest);
-                                if (DEBUG>=1) System.out.println("e: " + v + "->" + oev.dest + ", e': " + oev2.v + "->" + oev2.dest + ", angle(e') = " + e2_angle + ", bends(e') = " + oev2.bends);
-                                int m = Math.min(e2_angle-1, oew2.bends);
-                                oev2.angle+=m;
-                                if (oev2.angle>=4) oev2.angle-=4;
-                                oew2.bends = oew2.bends - m;
-                                tryagain = true;
-                                if (DEBUG>=1) System.out.println("  result (e'): " + oev2);
-                                if (DEBUG>=1) System.out.println("  result (sym(e')): " + oew2);
-                            }
-                        }
-                    }
-                }
-            }
-        }            
-    }
-    */
     
     // Makes simplifications one by one, trying to generate an actual 2d representation, and only consider those for which my simple
     // 2d algorithm generates graphs that are correct:
@@ -335,14 +225,14 @@ public class OrthographicEmbedding {
 
     
     static OEVertex vertexOrtographicEmbedding(int v, int graph[][], Visibility Gamma, OEVertex embedding[]) {
-        List<OEElement> vertexEmbedding = new LinkedList<OEElement>();
+        List<OEElement> vertexEmbedding = new ArrayList<OEElement>();
         double x = -1,y = -1;
         int n = graph.length;
         double tolerance = 0.1;
         
         if (DEBUG>=1) System.out.println("Generating ortographic embedding for node " + v + ":");
-        List<Integer> edgesOnTop = new LinkedList<Integer>();
-        List<Integer> edgesBelow = new LinkedList<Integer>();
+        List<Integer> edgesOnTop = new ArrayList<Integer>();
+        List<Integer> edgesBelow = new ArrayList<Integer>();
         double vertexY = Gamma.horizontal_y[v];
         for(int w = 0;w<n;w++) {
             if (graph[v][w]!=0) {
@@ -385,25 +275,24 @@ public class OrthographicEmbedding {
         int ntop = edgesOnTop.size();
         int nbelow = edgesBelow.size();
         if (ntop==1 && nbelow==0) { // (a)
-            if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (a).1");
             int w = edgesOnTop.get(0);
             OEElement e = new OEElement(v, w, OEElement.UP, 0);
             y = Gamma.horizontal_y[v];
             x = Gamma.vertical_x[Gamma.edgeIndexes[v][w]];
             findSymmetric(e,embedding);
             vertexEmbedding.add(e);
+            if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (a).1: " + x + "," + y);
             
         } else if (ntop==0 && nbelow==1) {  // (a)
-            if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (a).2");
             int w = edgesBelow.get(0);
             OEElement e = new OEElement(v, w, OEElement.DOWN, 0);
             y = Gamma.horizontal_y[v];
             x = Gamma.vertical_x[Gamma.edgeIndexes[v][w]];
             findSymmetric(e,embedding);
             vertexEmbedding.add(e);
+            if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (a).2: " + x + "," + y);
 
         } else if (ntop==2 && nbelow==0) {  // (b)
-            if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (b).1");
             int w = edgesOnTop.get(0);
             OEElement e = new OEElement(v, w, OEElement.UP, 0);
             y = Gamma.horizontal_y[v];
@@ -415,6 +304,7 @@ public class OrthographicEmbedding {
             e = new OEElement(v, w, OEElement.RIGHT, 1);
             findSymmetric(e,embedding);
             vertexEmbedding.add(e);
+            if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (b).1: " + x + "," + y);
                         
         } else if (ntop==1 && nbelow==1) {  // (c)
             if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (c).1");
@@ -454,7 +344,6 @@ public class OrthographicEmbedding {
                 vertexEmbedding.add(e);                
             }
         } else if (ntop==0 && nbelow==2) {  // (b)
-            if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (b).2");
             int w = edgesBelow.get(1);
             OEElement e = new OEElement(v, w, OEElement.DOWN, 0);
             y = Gamma.horizontal_y[v];
@@ -466,6 +355,7 @@ public class OrthographicEmbedding {
             e = new OEElement(v, w, OEElement.LEFT, 1);
             findSymmetric(e,embedding);
             vertexEmbedding.add(e);
+            if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (b).2: " + x + "," + y);
                         
         } else if (ntop==3 && nbelow==0) {  // (d)
             if (DEBUG>=1) System.out.println("Node " + v + " processed with pattern (d).1");

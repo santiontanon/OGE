@@ -73,6 +73,15 @@ public class STNumbering {
     }
     
     
+    public static List<int[]> allSTNumberings(int graph[][]) throws Exception {
+        List<int[]> l = new ArrayList();
+        for(int s = 0;s<graph.length;s++) {
+            l.addAll(allSTNumberings(graph, s));
+        }
+        return l;
+    }
+    
+    
     public static int[] stNumbering(int graph[][], int s, Random r) throws Exception {
         int t = -1;
         List<Integer> candidates = new ArrayList<Integer>();
@@ -85,6 +94,19 @@ public class STNumbering {
         t = candidates.get(r.nextInt(candidates.size()));
         return stNumbering(graph, s, t);
     }
+    
+    
+    public static List<int[]> allSTNumberings(int graph[][], int s) throws Exception {
+        List<Integer> candidates = new ArrayList<Integer>();
+        for(int i = 0;i<graph.length;i++) {
+            if (graph[s][i]==1) candidates.add(i);
+        }
+        List<int[]> l = new ArrayList();
+        for(Integer t:candidates) {
+            l.add(stNumbering(graph, s, t));
+        }
+        return l;
+    }    
     
         
     public static int[] stNumbering(int graph[][], int s, int t) throws Exception {
