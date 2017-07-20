@@ -121,7 +121,7 @@ public class Main {
     
     
     public static void printInstructions() {
-        System.out.println("Orthographic Graphic Embedder (OGE) v1.0 by Santiago Ontañón (2016)");
+        System.out.println("Orthographic Graph Embedder (OGE) v1.0 by Santiago Ontañón (2016)");
         System.out.println("");
         System.out.println("This tool computes an orthographic embedding of a plannar input graph. " + 
                            "Although the tool was originally designed to be part of a procedural-content generation (PCG) " + 
