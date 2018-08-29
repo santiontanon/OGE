@@ -63,6 +63,22 @@ public class SavePNG {
                                (int)(y0*cell_height + cell_height*(0.5 - edge_scale/2)), 
                                (int)((x1-x0)*cell_width + cell_width*edge_scale), 
                                (int)((y1-y0)*cell_height + cell_height*edge_scale));
+                    double pointx = x1*cell_width + 0.5*cell_width;
+                    double pointy = y1*cell_width + 0.5*cell_width;
+                    double vx = x1-x0;
+                    double vy = y1-y0;
+                    double vn = Math.sqrt(vx*vx+vy*vy);
+                    double w = cell_width/2;
+                    vx/=vn;
+                    vy/=vn;
+                    double wx = vy;
+                    double wy = -vx;
+                    g.fillPolygon(new int[]{(int)pointx,
+                                            (int)(pointx-vx*w+wx*w/2),
+                                            (int)(pointx-vx*w-wx*w/2)}, 
+                                  new int[]{(int)pointy,
+                                            (int)(pointy-vy*w+wy*w/2),
+                                            (int)(pointy-vy*w-wy*w/2)}, 3);
                 }
             }
         }

@@ -921,6 +921,7 @@ public class OrthographicEmbeddingResult {
         }
     }
 
+    
     int indexOfClosest(double v, List<Double> l) {
         int best = -1;
         double best_diff = 0;
@@ -1151,6 +1152,76 @@ public class OrthographicEmbeddingResult {
         }
 
         return true;
+    }
+    
+    
+    public OrthographicEmbeddingResult removeVertex(int v)
+    {
+        int n = nodeIndexes.length-1;
+        OrthographicEmbeddingResult o = new OrthographicEmbeddingResult(n);
+        if (embedding == null) o.embedding = null;
+        
+        for(int i = 0;i<n;i++) {
+            if (i<v) {
+                if (embedding!=null) o.embedding[i] = embedding[i];
+                o.nodeIndexes[i] = nodeIndexes[i];
+                o.x[i] = x[i];
+                o.y[i] = y[i];
+                for(int j = 0;j<n;j++) {
+                    if (j<v) {
+                        o.edges[i][j] = edges[i][j];
+                    } else {
+                        o.edges[i][j] = edges[i][j+1];
+                    }
+                }
+            } else {
+                if (embedding!=null) o.embedding[i] = embedding[i+1];
+                o.nodeIndexes[i] = nodeIndexes[i+1];
+                o.x[i] = x[i+1];
+                o.y[i] = y[i+1];
+                for(int j = 0;j<n;j++) {
+                    if (j<v) {
+                        o.edges[i][j] = edges[i+1][j];
+                    } else {
+                        o.edges[i][j] = edges[i+1][j+1];
+                    }
+                }
+            }
+        }
+        return o;
+    }
+    
+    
+    public OrthographicEmbeddingResult addVertices(int nv)
+    {
+        int n = nodeIndexes.length+nv;
+        OrthographicEmbeddingResult o = new OrthographicEmbeddingResult(n);
+        if (embedding == null) o.embedding = null;
+        
+        for(int i = 0;i<n;i++) {
+            if (i<nodeIndexes.length) {
+                if (embedding!=null) o.embedding[i] = embedding[i];
+                o.nodeIndexes[i] = nodeIndexes[i];
+                o.x[i] = x[i];
+                o.y[i] = y[i];
+                for(int j = 0;j<n;j++) {
+                    if (j<nodeIndexes.length) {
+                        o.edges[i][j] = edges[i][j];
+                    } else {
+                        o.edges[i][j] = false;
+                    }
+                }
+            } else {
+                if (embedding!=null) o.embedding[i] = null;
+                o.nodeIndexes[i] = -1;
+                o.x[i] = 0;
+                o.y[i] = 0;
+                for(int j = 0;j<n;j++) {
+                    o.edges[i][j] = false;
+                }
+            }
+        }
+        return o;
     }
     
     

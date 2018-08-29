@@ -31,7 +31,7 @@ public class OrthographicEmbeddingOptimizer {
             change = false;
 //            System.out.println("New optimization round...");
             for(int v = 0;v<n;v++) {
-                OrthographicEmbeddingResult o2 = optimize(v, o, graph, comparator);
+                OrthographicEmbeddingResult o2 = optimizeVertex(v, o, graph, comparator);
                 if (o2!=o) {
                     change = true;
 //                    System.out.println("Change in vertex " + v);
@@ -44,7 +44,7 @@ public class OrthographicEmbeddingOptimizer {
         return o;
     }
 
-    public static OrthographicEmbeddingResult optimize(int v, OrthographicEmbeddingResult o, int graph[][], EmbeddingComparator comparator) {
+    public static OrthographicEmbeddingResult optimizeVertex(int v, OrthographicEmbeddingResult o, int graph[][], EmbeddingComparator comparator) {
         int n = graph.length;       // number of vertices
         int n2 = o.x.length;
         int maxx = 0;
@@ -173,7 +173,8 @@ public class OrthographicEmbeddingOptimizer {
                     OrthographicEmbeddingResult result = findConnections(v, x,y, o, occupancyMatrix, idx, graph, verticesToDelete, edgesToIgnore);
                     if (result!=null) {
                         if (comparator.compare(best_o,result)>0) {
-                            if (DEBUG>=1) System.out.println("better");
+                            if (DEBUG>=1) 
+                                System.out.println("better");
                             best_o = result;
                         }
                     }
