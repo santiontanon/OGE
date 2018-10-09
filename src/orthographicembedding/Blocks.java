@@ -7,9 +7,8 @@
 package orthographicembedding;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -22,16 +21,16 @@ import util.Pair;
 public class Blocks {
     public static int DEBUG = 0;
     
-    public static Pair<HashMap<Integer,List<Integer>>,HashMap<Integer,List<Integer>>> blocks(int graph[][]) {
+    public static Pair<LinkedHashMap<Integer,List<Integer>>,LinkedHashMap<Integer,List<Integer>>> blocks(int graph[][]) {
         if (graph.length==1) {
             if (DEBUG>=2) System.out.println("Blocks: special case of a graph with a single node.");
             // special case:
-            HashMap<Integer,List<Integer>> blocks = new LinkedHashMap<Integer,List<Integer>>();
-            HashMap<Integer,List<Integer>> cutNodes = new LinkedHashMap<Integer,List<Integer>>();
+            LinkedHashMap<Integer,List<Integer>> blocks = new LinkedHashMap<Integer,List<Integer>>();
+            LinkedHashMap<Integer,List<Integer>> cutNodes = new LinkedHashMap<Integer,List<Integer>>();
             List<Integer> l = new LinkedList<Integer>();
             l.add(1);
             blocks.put(0, l);
-            return new Pair<HashMap<Integer,List<Integer>>,HashMap<Integer,List<Integer>>>(blocks,cutNodes);
+            return new Pair<LinkedHashMap<Integer,List<Integer>>,LinkedHashMap<Integer,List<Integer>>>(blocks,cutNodes);
         }
         
 
@@ -43,9 +42,8 @@ public class Blocks {
         int p[] = new int[n+1];           // this will store the spanning tree
         int d[] = new int[n+1];           // the distance of each node to the root of the tree
         boolean A[] = new boolean[n+1];   // one per node in the graph
-//        Set<Integer> T = new HashSet<>();
-        Set<Integer> X = new HashSet<Integer>();
-        Set<Integer> R = new HashSet<Integer>();
+        Set<Integer> X = new LinkedHashSet<Integer>();
+        Set<Integer> R = new LinkedHashSet<Integer>();
         List<Integer> U = new LinkedList<Integer>();        
         int treeroot = 1;
         
@@ -122,7 +120,7 @@ public class Blocks {
         }
         
         // Rename the blocks:
-        HashMap<Integer,Integer> blockRenaming = new LinkedHashMap<Integer,Integer>();
+        LinkedHashMap<Integer,Integer> blockRenaming = new LinkedHashMap<Integer,Integer>();
         List<Integer> trivialBlocks = new LinkedList<Integer>();
         int nextBlock = 1;
         for(int i = 1;i<=n;i++) {
@@ -146,8 +144,8 @@ public class Blocks {
         }
         
         // translate the blocks and cutedges:
-        HashMap<Integer,List<Integer>> blocks = new LinkedHashMap<Integer,List<Integer>>();
-        HashMap<Integer,List<Integer>> cutNodes = new LinkedHashMap<Integer,List<Integer>>();
+        LinkedHashMap<Integer,List<Integer>> blocks = new LinkedHashMap<Integer,List<Integer>>();
+        LinkedHashMap<Integer,List<Integer>> cutNodes = new LinkedHashMap<Integer,List<Integer>>();
         for(int i = 1;i<=n;i++) {
             List<Integer> nodeBlocks = new LinkedList<Integer>();
             //nodeBlocks.add(b[i]);
@@ -175,6 +173,6 @@ public class Blocks {
         }
         
         
-        return new Pair<HashMap<Integer,List<Integer>>,HashMap<Integer,List<Integer>>>(blocks,cutNodes);
+        return new Pair<LinkedHashMap<Integer,List<Integer>>,LinkedHashMap<Integer,List<Integer>>>(blocks,cutNodes);
     }
 }

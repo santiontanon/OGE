@@ -72,8 +72,8 @@ public class OrthographicEmbeddingOptimizer {
         boolean [][]edgesToIgnore = new boolean[n2][n2];
         List<Pair<Integer,Integer>> open = new LinkedList<Pair<Integer,Integer>>();
         for(int i = 0;i<n2;i++) {
-            if (o.edges[v][i] ||
-                o.edges[i][v]) open.add(new Pair<Integer,Integer>(v,i));
+            if (o.edges[v][i]) open.add(new Pair<Integer,Integer>(v,i));
+            if (o.edges[i][v]) open.add(new Pair<Integer,Integer>(i,v));
         }
         while(!open.isEmpty()) {
             Pair<Integer,Integer> current = open.remove(0);

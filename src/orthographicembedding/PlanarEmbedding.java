@@ -7,7 +7,6 @@
 package orthographicembedding;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class PlanarEmbedding {
     public static List<Integer>[] planarUpwardEmbedding(int graph[][], int stNumbering[]) throws Exception {
         int n = graph.length;
         List<Integer> embedding[] = new List[n];
-        HashMap<PQTree,Integer> nodeParent = new LinkedHashMap<PQTree,Integer>();
+        LinkedHashMap<PQTree,Integer> nodeParent = new LinkedHashMap<PQTree,Integer>();
         int nodeWithNumber[] = new int[n];
         int s = -1;
         int t = -1;

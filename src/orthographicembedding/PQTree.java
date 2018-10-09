@@ -6,8 +6,8 @@
 
 package orthographicembedding;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -693,7 +693,7 @@ public class PQTree {
     }
     
     public boolean reduce(List<PQTree> S) throws Exception {
-        Set<PQTree> processed = new HashSet<PQTree>();
+        Set<PQTree> processed = new LinkedHashSet<PQTree>();
         List<PQTree> queue = new LinkedList<PQTree>();
                         
         // add all the leaves of the tree to the queue
@@ -885,7 +885,7 @@ public class PQTree {
         return toString(0, null);
     }
     
-    public String toString(HashMap<PQTree,Integer> nodeParent) {
+    public String toString(LinkedHashMap<PQTree,Integer> nodeParent) {
         return toString(0,nodeParent);
     }
     
@@ -896,7 +896,7 @@ public class PQTree {
     }
     
     
-    public String toString(int indents, HashMap<PQTree,Integer> nodeParent) {
+    public String toString(int indents, LinkedHashMap<PQTree,Integer> nodeParent) {
         if (nodeType==DIRECTION_INDICATOR) {
             if (direction==DIRECTION_INDICATOR_LEFT) return indentString(indents) + "direction-indicator-left(" + nodeIndex + ")";
             if (direction==DIRECTION_INDICATOR_RIGHT) return indentString(indents) + "direction-indicator-right(" + nodeIndex + ")";

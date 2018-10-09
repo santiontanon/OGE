@@ -9,7 +9,7 @@ package orthographicembedding;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -187,9 +187,9 @@ public class Visibility {
     // W-Visibility algorithm (reference)
     public boolean WVisibility() throws Exception {
         if (DEBUG>=1) System.out.println("Blocks and cutnodes (for a graph with " + graph.length + " nodes)");
-        Pair<HashMap<Integer,List<Integer>>,HashMap<Integer,List<Integer>>> tmp = Blocks.blocks(graph);
-        HashMap<Integer,List<Integer>> blocks = tmp.m_a;
-        HashMap<Integer,List<Integer>> cutNodes = tmp.m_b;
+        Pair<LinkedHashMap<Integer,List<Integer>>,LinkedHashMap<Integer,List<Integer>>> tmp = Blocks.blocks(graph);
+        LinkedHashMap<Integer,List<Integer>> blocks = tmp.m_a;
+        LinkedHashMap<Integer,List<Integer>> cutNodes = tmp.m_b;
         if (DEBUG>=1) {
             for(int blockID:blocks.keySet()) {
                 System.out.println("block " + blockID + ": " + blocks.get(blockID));

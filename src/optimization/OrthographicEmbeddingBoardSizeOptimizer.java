@@ -61,6 +61,7 @@ public class OrthographicEmbeddingBoardSizeOptimizer {
             }
         }
         if (DEBUG>=1) {
+            System.out.println("");
             for(int i = 0;i<dy;i++) {
                 for(int j = 0;j<dx;j++) {
                     System.out.print(map[j][i]);
